@@ -6,6 +6,7 @@ import { LogInScreen } from '../screens/unLogged/LogInScreen';
 import { RegisterScreen } from '../screens/unLogged/RegisterScreen';
 import { useAppContext } from '../hooks/useAppContext';
 import { HomeScreen } from '../screens/Store/HomeScreen';
+import { ForgotScreen } from '../screens/unLogged/ForgotScreen';
 
 const Stack = createStackNavigator()
 
@@ -24,6 +25,7 @@ export const NavigationHolder = () => {
                   <Stack.Screen name='Intro'      component={IntroScreen}/>
                   <Stack.Screen name='LogIn'      component={LogInScreen}/>
                   <Stack.Screen name='Register'   component={RegisterScreen}/>
+                  <Stack.Screen name='AccountRecover'   component={ForgotScreen}/>
               </Stack.Navigator>
           </NavigationContainer>
         )

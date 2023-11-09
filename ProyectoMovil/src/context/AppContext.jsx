@@ -47,7 +47,7 @@ function reducer(state, action){
 export const AppContextProvider = ({children}) =>{
 
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [themeMode, setTheme] = useState(THEME.DARK)
+    const [themeMode, setTheme] = useState(THEME.LIGHT)
 
  
     useEffect(() => {
@@ -81,11 +81,11 @@ export const AppContextProvider = ({children}) =>{
         await SecureStore.setItemAsync('userData', state)
     }
 
-    const handleThemeChange = async ({themeRequest}) =>{
+    const handleThemeChange = async (themeRequest) =>{
         if(themeRequest==="LIGHT"){
-            setTheme( THEME.LIGHT)
+            setTheme(THEME.LIGHT)
         }else{
-            setTheme( THEME.DARK)
+            setTheme(THEME.DARK)
         }
         await SecureStore.setItemAsync('themeMode', themeRequest)
     }
