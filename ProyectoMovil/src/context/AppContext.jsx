@@ -1,12 +1,12 @@
 import * as SecureStore from "expo-secure-store"
-import { createContext, useEffect, useReducer } from "react"
+import { createContext, useEffect, useReducer, useState } from "react"
+import { THEME } from "../theme/Colors"
 
 export const AppContext =  createContext()
 
 const initialState = {
     username: '',
     loggedIn: false,
-
 }
 
 const CONTEXT_ACTIONS = {
@@ -47,12 +47,20 @@ function reducer(state, action){
 export const AppContextProvider = ({children}) =>{
 
     const [state, dispatch] = useReducer(reducer, initialState)
+    const [themeMode, setTheme] = useState(THEME.DARK)
 
+ 
     useEffect(() => {
         const checkData = async() =>{
             try {
+                // const currentTheme = await SecureStore.getItemAsync('themeMode')
+                // if(currentTheme){
+                //     handleThemeChange(currentTheme)
+                // }
+                //handleThemeChange('LIGHT')
+
                 const currentUser = await SecureStore.getItemAsync('userData')
-                if(currentUser.username !== ''){
+                if(currentUser){
                     dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, data: currentUser})
                 }
             } catch (error) {
@@ -73,11 +81,22 @@ export const AppContextProvider = ({children}) =>{
         await SecureStore.setItemAsync('userData', state)
     }
 
-     const values = [
+    const handleThemeChange = async ({themeRequest}) =>{
+        if(themeRequest==="LIGHT"){
+            setTheme( THEME.LIGHT)
+        }else{
+            setTheme( THEME.DARK)
+        }
+        await SecureStore.setItemAsync('themeMode', themeRequest)
+    }
+
+     const values = {
         state,
+        themeMode,
         handleLogIn,
         handleLogOut,
-     ]
+        handleThemeChange,
+    }
 
      return(
         <AppContext.Provider value={values}>

@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 
 export const NavigationHolder = () => {
 
-    const [state] = useAppContext()
+    const {state} = useAppContext()
 
     console.log('state: ', state.loggedIn)
 
