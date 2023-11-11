@@ -22,8 +22,8 @@ function reducer(state, action){
         case CONTEXT_ACTIONS.LOG_IN:
             return{
                 ...state,
+                username: action.user,
                 loggedIn: true,
-                username: action.username,
             }
 //---------------------------------------------------------------
 //*
@@ -38,8 +38,8 @@ function reducer(state, action){
         case CONTEXT_ACTIONS.RECOVER_USER:
             return{
                 ...state,
-                loggedIn: action.islogged,
-                username: action.currentUser
+                loggedIn: true,
+                username: action.user
             }            
     }
 }
@@ -53,17 +53,17 @@ export const AppContextProvider = ({children}) =>{
     useEffect(() => {
         const checkData = async() =>{
             try {
-                // const currentTheme = await SecureStore.getItemAsync('themeMode')
-                // if(currentTheme){
-                //     handleThemeChange(currentTheme)
-                // }
-                //handleThemeChange('LIGHT')
-
-                const currentUser = await SecureStore.getItemAsync('username')
-                const isLogged = await SecureStore.getItemAsync('username')
-                if(currentUser){
-                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, currentUser: currentUser, isLogged: isLogged})
+                const saving = await SecureStore.getItemAsync('userData')
+                if(saving){
+                    const userData = (JSON.parse(saving))
+                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, user: userData.username})
                 }
+
+                const currentTheme = await SecureStore.getItemAsync('themeMode')
+                 if(currentTheme){
+                    handleThemeChange(currentTheme)
+                 }
+
             } catch (error) {
                 console.log(error)
             }
@@ -71,27 +71,21 @@ export const AppContextProvider = ({children}) =>{
         checkData()
     }, [])
 
-    const userChange = async () =>{
-        try {
-            await SecureStore.setItemAsync('username', JSON.stringify(state.username))
-            await SecureStore.setItemAsync('loggedIn', JSON.stringify(state.loggedIn))
-        } catch (error) {
-            console.log(error)
+
+    const handleLogIn = (username, password) =>{
+        //Agregar el acceso a la BD
+        if(username==='Beto' && password==='Prueba12'){
+            dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
         }
     }
-
-    const handleLogIn = async (username, password) =>{
-        //Agregar el acceso a la BD
-        if(username==='Pruebacio' && password==='Prueba_12'){
-            dispatch({type: CONTEXT_ACTIONS.LOG_IN, username: username})
-            await userChange()
-        }
+    
+    const saveUser = async () =>{
+        await SecureStore.setItemAsync('userData', JSON.stringify(state))
     }
 
     const handleLogOut = async () =>{
         dispatch({type: CONTEXT_ACTIONS.LOG_OUT})
-        await SecureStore.setItemAsync('userData', state)
-        await userChange()
+        await SecureStore.deleteItemAsync('userData')
     }
 
     const handleThemeChange = async (themeRequest) =>{
@@ -100,11 +94,12 @@ export const AppContextProvider = ({children}) =>{
         }else{
             setTheme(THEME.DARK)
         }
-        //await SecureStore.setItemAsync('themeMode', themeRequest)
+        await SecureStore.setItemAsync('themeMode', themeRequest)
     }
 
      const values = {
         state,
+        saveUser,
         themeMode,
         handleLogIn,
         handleLogOut,
