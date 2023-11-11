@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { Ramen } from '../../../assets'
 import { RegisterInput } from '../../components/Inputs/RegisterInput'
@@ -9,8 +9,22 @@ import { useNavigation } from '@react-navigation/native'
 
 export const LogInScreen = () => {
 
-  const {state, themeMode} = useAppContext()
+  const {state, themeMode, handleLogIn} = useAppContext()
   const navigation = useNavigation()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  
+
+  const handleLoggedPressed = async() => {
+    
+    if(username === '' || password === ''){
+      setError("Missing Data")
+    }else{
+      await (handleLogIn(username, password))
+    }
+      setError("Wrong Credentials")
+  }
 
   return (
     <View style={styles(themeMode).container}>
@@ -18,15 +32,15 @@ export const LogInScreen = () => {
         <Text style={styles(themeMode).title}>Log In</Text>
         
         <View style={{gap: 20}}>
-          <RegisterInput iconName={'mail'} label={'eMail'}/>
+          <RegisterInput iconName={'mail'} label={'eMail'} onChangeText={(value) => setUsername(value)} inputValue={username}/>
 
           <View style={{alignItems: 'flex-end', gap:10}}>
-            <RegisterInput iconName={'lock'} label={'Password'} secure/>
+            <RegisterInput iconName={'lock'} label={'Password'} secure onChangeText={(value) => setPassword(value)} inputValue={password}/>
             <LinkButton text={'Forgot your password?'} onPress={() => navigation.navigate('AccountRecover')}/>
           </View>
         </View>
-        
-        <ConfirmationButton text={'Log In'}/>
+        <Text style={styles(themeMode).errorText}>{error}</Text>
+        <ConfirmationButton text={'Log In'} onPress={() => handleLoggedPressed()}/>
         <View style={{flexDirection:'row', gap: 10}}>
           <Text style={{color: themeMode.GENERALTEXT,}}>Don't have an account?</Text>
           <LinkButton text={'Register'} onPress={() => navigation.navigate('Register')}/>
@@ -53,4 +67,7 @@ const styles = (theme) => StyleSheet.create({
       height: 300,
       borderRadius: 400,
     },
+    errorText:{
+      color: theme.ALERT
+    }
 })

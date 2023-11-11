@@ -4,11 +4,11 @@
 // npx expo install react-native-screens react-native-safe-area-context
 // npm install @react-navigation/stack
 // npx expo install react-native-gesture-handler
+// npm install @react-navigation/drawer
+// npm install react-native-gesture-handler react-native-reanimated
 //* Storage
 // npx expo install expo-secure-store
 
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { AppContextProvider } from './src/context/AppContext';
 import { NavigationHolder } from './src/routes/NavigationHolder';
 
@@ -20,11 +20,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

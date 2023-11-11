@@ -38,8 +38,8 @@ function reducer(state, action){
         case CONTEXT_ACTIONS.RECOVER_USER:
             return{
                 ...state,
-                loggedIn: true,
-                username: action.data.username
+                loggedIn: action.islogged,
+                username: action.currentUser
             }            
     }
 }
@@ -59,9 +59,10 @@ export const AppContextProvider = ({children}) =>{
                 // }
                 //handleThemeChange('LIGHT')
 
-                const currentUser = await SecureStore.getItemAsync('userData')
+                const currentUser = await SecureStore.getItemAsync('username')
+                const isLogged = await SecureStore.getItemAsync('username')
                 if(currentUser){
-                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, data: currentUser})
+                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, currentUser: currentUser, isLogged: isLogged})
                 }
             } catch (error) {
                 console.log(error)
@@ -70,15 +71,27 @@ export const AppContextProvider = ({children}) =>{
         checkData()
     }, [])
 
+    const userChange = async () =>{
+        try {
+            await SecureStore.setItemAsync('username', JSON.stringify(state.username))
+            await SecureStore.setItemAsync('loggedIn', JSON.stringify(state.loggedIn))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleLogIn = async (username, password) =>{
         //Agregar el acceso a la BD
-        dispatch({type: CONTEXT_ACTIONS.LOG_IN, username: username})
-        await SecureStore.setItemAsync('userData', state)
+        if(username==='Pruebacio' && password==='Prueba_12'){
+            dispatch({type: CONTEXT_ACTIONS.LOG_IN, username: username})
+            await userChange()
+        }
     }
 
     const handleLogOut = async () =>{
         dispatch({type: CONTEXT_ACTIONS.LOG_OUT})
         await SecureStore.setItemAsync('userData', state)
+        await userChange()
     }
 
     const handleThemeChange = async (themeRequest) =>{
@@ -87,7 +100,7 @@ export const AppContextProvider = ({children}) =>{
         }else{
             setTheme(THEME.DARK)
         }
-        await SecureStore.setItemAsync('themeMode', themeRequest)
+        //await SecureStore.setItemAsync('themeMode', themeRequest)
     }
 
      const values = {
