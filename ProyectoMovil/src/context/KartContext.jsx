@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { AppContext } from "./AppContext";
 
 
 export const KartContext = createContext()
