@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 
 export const LogInScreen = () => {
 
-  const {state, themeMode, handleLogIn} = useAppContext()
+  const {themeMode, handleLogIn} = useAppContext()
   const navigation = useNavigation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +21,7 @@ export const LogInScreen = () => {
     if(username === '' || password === ''){
       setError("Missing Data")
     }else{
-      await (handleLogIn(username, password))
+      await (handleLogIn(username, password, navigation))
     }
       setError("Wrong Credentials")
   }
