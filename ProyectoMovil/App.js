@@ -8,6 +8,8 @@
 // npm install react-native-gesture-handler react-native-reanimated
 //* Storage
 // npx expo install expo-secure-store
+//*API
+// npm install axios
 
 import { AppContextProvider } from './src/context/AppContext';
 import { NavigationHolder } from './src/routes/NavigationHolder';

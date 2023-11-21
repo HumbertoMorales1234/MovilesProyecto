@@ -1,6 +1,7 @@
 import * as SecureStore from "expo-secure-store"
 import { createContext, useEffect, useReducer, useState } from "react"
 import { THEME } from "../theme/Colors"
+import axios from 'axios'
 
 export const AppContext =  createContext()
 
@@ -72,11 +73,44 @@ export const AppContextProvider = ({children}) =>{
     }, [])
 
 
-    const handleLogIn = (username, password) =>{
+    const handleLogIn = async (username, password, navigation) =>{
         //Agregar el acceso a la BD
-        if(username==='Beto' && password==='Prueba12'){
-            dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
-        }
+        // if(username==='Beto' && password==='Prueba12'){
+        //     dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
+        // }
+        try {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView', {
+              username: username,
+              password: password,
+            });
+
+            if (response.status === 200) {
+              console.log(response.data.access)
+              dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
+            } else {
+              console.log('Wrong Credentials');
+            }
+          } catch (error) {
+            console.log('Error '+String(error));
+          }
+    }
+
+    const handleRegister = async (username, password, navigation) =>{
+        try {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView', {
+              username: username,
+              password: password,
+            });
+
+            if (response.status === 200) {
+              console.log(response.data.access)
+              dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
+            } else {
+              console.log('Wrong Credentials');
+            }
+          } catch (error) {
+            console.log('Error '+String(error));
+          }
     }
     
     const saveUser = async () =>{
@@ -104,6 +138,7 @@ export const AppContextProvider = ({children}) =>{
         handleLogIn,
         handleLogOut,
         handleThemeChange,
+        handleRegister
     }
 
      return(
