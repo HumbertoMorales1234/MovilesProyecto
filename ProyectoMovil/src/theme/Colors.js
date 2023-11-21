@@ -11,8 +11,8 @@ export const THEME = {
     },
     DARK:{
         BACKGROUND:'#002827',
-        SHADOW:'#000c54',
-        CONTRAST:'#8f0cff',
+        SHADOW:'#435AE8',
+        CONTRAST:'#BA6DFB',
         HIGHLIGHT:'#befffe',
         SHADOW_CONTRAST:'#842d87',
         GENERALTEXT:'#ffffff',

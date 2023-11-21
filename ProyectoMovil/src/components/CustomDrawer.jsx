@@ -16,7 +16,7 @@ export const CustomDrawerContent = (props) => {
 
 const styles = (theme) => StyleSheet.create({
     container:{
-      backgroundColor: theme.SHADOW
+      backgroundColor: theme.BACKGROUND
     },
     item:{
       color: theme.GENERALTEXT

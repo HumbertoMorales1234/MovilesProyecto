@@ -13,6 +13,7 @@ import { SettingsScreen } from '../screens/Store/SettingsScreen';
 import { HistorialScreen } from '../screens/Store/HistorialScreen';
 import { CarritoScreen } from '../screens/Store/CarritoScreen';
 import { KartContextProvider } from '../context/KartContext';
+import { HomeNavigation } from './HomeNavigation';
 
 const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator();
@@ -37,19 +38,19 @@ export const NavigationHolder = () => {
     }else{
         saveUser()
         return(
-            // <KartContextProvider>
+             //<KartContextProvider>
 
                 <NavigationContainer>
                     <Drawer.Navigator drawerContent={props => <CustomDrawerContent{...props}/>} 
-                    screenOptions={{drawerInactiveTintColor: themeMode.GENERALTEXT, drawerActiveTintColor: themeMode.HIGHLIGHT, 
+                        screenOptions={{drawerInactiveTintColor: themeMode.GENERALTEXT, drawerActiveTintColor: themeMode.HIGHLIGHT, 
                         headerStyle:{backgroundColor: themeMode.CONTRAST}, headerTintColor: themeMode.BACKGROUND}}>
-                        <Drawer.Screen name='Home'          component={HomeScreen}      options={{headerTitle:'Store'}}/>
+                        <Drawer.Screen name='Home'          component={HomeNavigation}      options={{headerTitle:'Store'}}/>
                         <Drawer.Screen name='Settings'      component={SettingsScreen}/>
                         <Drawer.Screen name='History'       component={HistorialScreen}/>
                         <Drawer.Screen name='Kart'       component={CarritoScreen}/>
                     </Drawer.Navigator>
                 </NavigationContainer>
-            // </KartContextProvider>
+            //</KartContextProvider>
         )
     }
 }
