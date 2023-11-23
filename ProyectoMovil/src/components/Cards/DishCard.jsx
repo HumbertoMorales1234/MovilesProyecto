@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useAppContext } from '../../hooks/useAppContext'
+import { Ramen } from '../../../assets'
 
 export const DishCard = ({onPress, dish}) => {
 
@@ -9,7 +10,7 @@ export const DishCard = ({onPress, dish}) => {
 
   return (
     <TouchableOpacity style={styles(themeMode).container}>
-        <Image source={dish.image} style={styles(themeMode).image}/>
+        <Image source={Ramen} style={styles(themeMode).image}/>
         <View style={{ width: 150, alignItems: 'center'}}>
             <Text style={styles(themeMode).title}>{dish.dishName}</Text>
         </View>
