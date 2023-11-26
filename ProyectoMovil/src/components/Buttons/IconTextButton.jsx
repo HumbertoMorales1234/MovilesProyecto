@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'; // back, moon, sun
 import { useAppContext } from '../../hooks/useAppContext';
 import { Text } from 'react-native';
