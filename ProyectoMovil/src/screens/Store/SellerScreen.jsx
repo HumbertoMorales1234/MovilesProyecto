@@ -18,6 +18,7 @@ import { DishCard } from '../../components/Cards/DishCard'
 const Categories = [
   {id: 1, text: 'Vegan', isActive: false},
   {id: 2, text: 'Categoria2', isActive: false},
+  {id: 3, text: '🌶️ Spicy', isActive: false},
 ]
 
 // const dishes = [

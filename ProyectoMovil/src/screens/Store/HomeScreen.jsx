@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 const Categories = [
   {id: 1, text: 'Vegan', isActive: false},
   {id: 2, text: 'Categoria2', isActive: false},
+  {id: 3, text: '🌶️ Spicy', isActive: false},
 ]
 
 export const HomeScreen = () => {
