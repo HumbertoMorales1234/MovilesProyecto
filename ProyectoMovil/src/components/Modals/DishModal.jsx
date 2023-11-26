@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { IconTextButton } from '../Buttons/IconTextButton'
 import { Feather } from '@expo/vector-icons';
 import { IconButton } from '../Buttons/IconButton';
 import { ReviewCard } from '../Cards/ReviewCard';
+import { TouchableOpacity } from 'react-native';
 
 const review = [
   {id: 1, text: 'Good product', stars: 5},
   {id: 2, text: 'Tasty af', stars: 5},
   {id: 3, text: 'It could be better', stars: 3},
   {id: 4, text: 'Not bad', stars: 4},
+  {id: 5, text: 'Good enough', stars: 4},
 ]
 
 export const DishModal = ({dish, hideModal}) => {
 
-  const {themeMode} = useAppContext()
+  const {themeMode, handleAddToKart,} = useAppContext()
   const [counter, setCounter] = useState(1)
   
   const averageReview = () =>{
@@ -39,9 +41,19 @@ export const DishModal = ({dish, hideModal}) => {
     setCounter(counter+1)
   }
 
+  const handleAdd = (hideModal) =>{
+    handleAddToKart(dish, counter)
+    console.log('added')
+    hideModal()
+  }
+
   return (
     <View style={styles(themeMode).container}>
-        <Image source={dish.image} style={styles(themeMode).image} />
+        <ImageBackground source={dish.image} style={styles(themeMode).image} imageStyle={{borderTopLeftRadius: 20, borderTopRightRadius: 20}}>
+          <TouchableOpacity onPress={hideModal}>
+           <Feather name="x" size={28} color={themeMode.SHADOWCONTRAST} />
+          </TouchableOpacity>
+        </ImageBackground>
 
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Text style={styles(themeMode).title} >{dish.dishName}</Text>
@@ -63,7 +75,7 @@ export const DishModal = ({dish, hideModal}) => {
           <View>
             <Text style={styles(themeMode).subTitle}>Total: {(counter*dish.price).toFixed(2)} $</Text>
           </View>
-          <IconTextButton text={'Add to the cart'} iconName={'shopping-cart'} onPress={hideModal}/>
+          <IconTextButton text={'Add to the cart'} iconName={'shopping-cart'} onPress={() => handleAdd(hideModal)}/>
         </View>
 
         <View>
@@ -102,8 +114,11 @@ const styles = (theme) => StyleSheet.create({
   image:{
     width: 400,
     height: 150,
+    borderRadius: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   title:{
     color: theme.GENERALTEXT,

@@ -10,12 +10,15 @@
 // npx expo install expo-secure-store
 
 import { AppContextProvider } from './src/context/AppContext';
+import { KartContextProvider } from './src/context/KartContext';
 import { NavigationHolder } from './src/routes/NavigationHolder';
 
 export default function App() {
   return (
     <AppContextProvider>
-      <NavigationHolder/>
+       {/* <KartContextProvider> */}
+        <NavigationHolder/>
+       {/* </KartContextProvider>  */}
     </AppContextProvider>
   );
 }

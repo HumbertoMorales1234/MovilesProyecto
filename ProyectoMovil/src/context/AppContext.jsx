@@ -48,6 +48,7 @@ export const AppContextProvider = ({children}) =>{
 
     const [state, dispatch] = useReducer(reducer, initialState)
     const [themeMode, setTheme] = useState(THEME.LIGHT)
+    const [kartProducts, setKartProducts] = useState([])
 
  
     useEffect(() => {
@@ -70,7 +71,6 @@ export const AppContextProvider = ({children}) =>{
         }
         checkData()
     }, [])
-
 
     const handleLogIn = (username, password) =>{
         //Agregar el acceso a la BD
@@ -97,6 +97,57 @@ export const AppContextProvider = ({children}) =>{
         await SecureStore.setItemAsync('themeMode', themeRequest)
     }
 
+    const handleAddToKart = (dish, cantidad) =>{
+        const alreadyAdded=kartProducts.some( product=> product.dish.dishName == dish.dishName)
+        if(alreadyAdded){
+            const mappedKart = kartProducts.map(product =>{
+                if (product.dish.dishName === dish.dishName){
+                return {
+                    ...product,
+                    cantidad: product.cantidad+cantidad,
+                    }
+                }
+            return product
+          })
+          setKartProducts(mappedKart)
+          console.log(kartProducts)
+        }else{
+        setKartProducts(prevProducts => [...prevProducts, { dish: dish, cantidad: cantidad }]);
+        console.log(kartProducts)
+      }
+    }
+
+    const handleDeleteFromKart = (dishName) =>{
+        const filteredArray = kartProducts.filter(product=> product.dish.dishName !== dishName)
+        setKartProducts(filteredArray)
+    }
+
+    const handleReduceCuantity = (dishName) =>{
+        const mappedKart = kartProducts.map(product =>{
+            if (product.dish.dishName === dishName && product.cantidad>1){
+            return {
+                ...product,
+                cantidad: product.cantidad-1,
+                }
+            }
+        return product
+      })
+      setKartProducts(mappedKart)
+    }
+
+    const handleIncreaseCuantity = (dishName) =>{
+        const mappedKart = kartProducts.map(product =>{
+            if (product.dish.dishName === dishName){
+            return {
+                ...product,
+                cantidad: product.cantidad+1,
+                }
+            }
+        return product
+      })
+      setKartProducts(mappedKart)
+    }
+
      const values = {
         state,
         saveUser,
@@ -104,6 +155,11 @@ export const AppContextProvider = ({children}) =>{
         handleLogIn,
         handleLogOut,
         handleThemeChange,
+        kartProducts, 
+        handleAddToKart, 
+        handleDeleteFromKart,
+        handleReduceCuantity,
+        handleIncreaseCuantity,
     }
 
      return(
