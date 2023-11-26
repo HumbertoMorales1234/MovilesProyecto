@@ -8,30 +8,19 @@ import { RestauranCard } from '../../components/Cards/RestauranCard'
 import { useNavigation } from '@react-navigation/native'
 
 const Categories = [
-  {id: 1, text: '🌿 Vegan', isActive: false},
-  {id: 2, text: '🌶️ Spicy', isActive: false},
-  {id: 3, text: '🇲🇽 Mexican', isActive: false},
-  {id: 4, text: '🍨 Dessert', isActive: false},
-  {id: 5, text: '🍝 Pasta', isActive: false},
-  {id: 6, text: '🍕 Pizza', isActive: false},
-]
-
-const Restaurants = [
-  {id: 1, restaurantName: 'Chilitos', image: Cocktail, Categories: ['🌿 Vegan', '🌶️ Spicy']},
-  {id: 2, restaurantName: 'El Pollo Loco', image: Fig, Categories: ['🌶️ Spicy', '🇲🇽 Mexican']},
-  {id: 3, restaurantName: 'La Michoacana', image: Xmas, Categories: ['🍨 Dessert']},
-  {id: 4, restaurantName: "Peppe's Pizza", image: Bread, Categories: ['🍕 Pizza']},
-  {id: 5, restaurantName: "Dominos's Pizza", image: Bread, Categories: ['🍕 Pizza']},
-  {id: 6, restaurantName: "La Suavecita", image: Bread, Categories: ['🍕 Pizza', '🌶️ Spicy']},
-  {id: 7, restaurantName: "Italianis", image: Bread, Categories: ['🍕 Pizza', '🍝 Pasta']},
-  {id: 8, restaurantName: "Dairy Queen", image: Bread, Categories: ['🍨 Dessert']},
+  {id: 1, text: 'Vegan', isActive: false},
+  {id: 2, text: 'Categoria2', isActive: false},
+  {id: 3, text: '🌶️ Spicy', isActive: false},
 ]
 
 export const HomeScreen = () => {
 
+  const {getRestaurants} = useAppContext()
+
   const {themeMode} = useAppContext()
   const [filters, setFilters] = useState([])
-  const [filteredRestaurants, setRestaurants] = useState(Restaurants)
+  const [filteredRestaurants, setFilteredRestaurants] = useState([])
+  const [Restaurants, setRestaurants] = useState([])
   const navigation = useNavigation()
 
   useEffect( () => {
@@ -42,6 +31,18 @@ export const HomeScreen = () => {
       });
     }
     handleFilterSetting()
+
+    const fetchRestaurants = async () => {
+      try {
+        const apiData = await getRestaurants()
+        setFilteredRestaurants(apiData)
+        setRestaurants(apiData)
+        console.log(apiData)
+      } catch (error) {
+        console.log('Error fetching restaurants:', error)
+      }
+    }
+    fetchRestaurants()
   }, [])
     
 
@@ -68,9 +69,9 @@ export const HomeScreen = () => {
           restaurant.Categories.includes(filterText)
         )
       );
-      setRestaurants(filtering);
+      setFilteredRestaurants(filtering);
     } else {
-      setRestaurants(Restaurants);
+      setFilteredRestaurants(Restaurants);
     }
   }; 
 
