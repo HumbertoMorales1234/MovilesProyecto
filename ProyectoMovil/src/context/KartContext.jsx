@@ -5,12 +5,12 @@ import { AppContext } from "./AppContext";
 export const KartContext = createContext()
 
 export const KartContextProvider = ({children}) => {
-    const values = {
+    const kartValues = {
         
     }
 
      return(
-        <AppContext.Provider value={values}>
+        <AppContext.Provider value={kartValues}>
             {children}
         </AppContext.Provider>
      )

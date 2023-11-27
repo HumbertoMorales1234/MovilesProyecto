@@ -38,8 +38,7 @@ export const NavigationHolder = () => {
     }else{
         saveUser()
         return(
-             //<KartContextProvider>
-
+             
                 <NavigationContainer>
                     <Drawer.Navigator drawerContent={props => <CustomDrawerContent{...props}/>} 
                         screenOptions={{drawerInactiveTintColor: themeMode.GENERALTEXT, drawerActiveTintColor: themeMode.HIGHLIGHT, 
@@ -50,7 +49,7 @@ export const NavigationHolder = () => {
                         <Drawer.Screen name='Kart'       component={CarritoScreen}/>
                     </Drawer.Navigator>
                 </NavigationContainer>
-            //</KartContextProvider>
+            
         )
     }
 }
