@@ -72,12 +72,19 @@ export const AppContextProvider = ({children}) =>{
     }, [])
 
 
-    const handleLogIn = (username, password) =>{
-        //Agregar el acceso a la BD
-        if(username==='Beto' && password==='Prueba12'){
-            dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
+    const handleLogIn = (username, password) => {
+        // Agregar el acceso a la BD
+        const isValidPassword = /^(?=(.*[A-Z]){2})(?=(.*[a-z]){2})(?=(.*\d){3})(?=(.*[\W_]){2})[A-Za-z\d\W_]{10,}$/.test(
+          password
+        );
+    
+        if (username === 'Beto' && isValidPassword) {
+          dispatch({ type: CONTEXT_ACTIONS.LOG_IN, user: username });
+          return true;
         }
-    }
+    
+        return false;
+      };
     
     const saveUser = async () =>{
         await SecureStore.setItemAsync('userData', JSON.stringify(state))
