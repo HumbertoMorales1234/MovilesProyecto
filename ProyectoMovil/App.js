@@ -8,6 +8,10 @@
 // npm install react-native-gesture-handler react-native-reanimated
 //* Storage
 // npx expo install expo-secure-store
+//* ImagePicker
+// npx expo install expo-image-picker
+//* ExpoSharing
+// npx expo install expo-sharing
 
 import { AppContextProvider } from './src/context/AppContext';
 import { KartContextProvider } from './src/context/KartContext';
@@ -16,9 +20,7 @@ import { NavigationHolder } from './src/routes/NavigationHolder';
 export default function App() {
   return (
     <AppContextProvider>
-       {/* <KartContextProvider> */}
         <NavigationHolder/>
-       {/* </KartContextProvider>  */}
     </AppContextProvider>
   );
 }
