@@ -17,6 +17,7 @@ export const DishCard = ({onPress, dish}) => {
     const hideModal = () =>{
         setModalVisibility(false)
     }
+    
 
   return (
     // <TouchableOpacity style={styles(themeMode).container}>
