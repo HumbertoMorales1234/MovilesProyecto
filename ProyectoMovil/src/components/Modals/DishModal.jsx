@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import { FlatList, Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { IconTextButton } from '../Buttons/IconTextButton'
@@ -7,19 +8,31 @@ import { IconButton } from '../Buttons/IconButton';
 import { ReviewCard } from '../Cards/ReviewCard';
 import { TouchableOpacity } from 'react-native';
 
-const review = [
-  {id: 1, text: 'Good product', stars: 5},
-  {id: 2, text: 'Tasty af', stars: 5},
-  {id: 3, text: 'It could be better', stars: 3},
-  {id: 4, text: 'Not bad', stars: 4},
-  {id: 5, text: 'Good enough', stars: 4},
-]
+// const review = [
+//   {id: 1, text: 'Good product', stars: 5},
+//   {id: 2, text: 'Tasty af', stars: 5},
+//   {id: 3, text: 'It could be better', stars: 3},
+//   {id: 4, text: 'Not bad', stars: 4},
+// ]
 
 export const DishModal = ({dish, hideModal}) => {
 
-  const {themeMode, handleAddToKart,} = useAppContext()
+  const {themeMode, getReviews, handleAddToKart,} = useAppContext()
   const [counter, setCounter] = useState(1)
+  const [review, setReview] = useState([])
   
+  useEffect( () => {
+    const fetchReviews = async () => {
+      try {
+        const apiData = await getReviews(dish.id)
+        setReview(apiData)
+      } catch (error) {
+        console.log('Error fetching restaurants:', error)
+      }
+    }
+    fetchReviews()
+  }, [])
+
   const averageReview = () =>{
     let mean = 0
     let totalReviews = 0
@@ -79,7 +92,7 @@ export const DishModal = ({dish, hideModal}) => {
         </View>
 
         <View>
-          <Text style={styles(themeMode).subTitle}>Location</Text>
+          <Text style={styles(themeMode).subTitle}>Location: {dish.location}</Text>
           <View>
 
           </View>

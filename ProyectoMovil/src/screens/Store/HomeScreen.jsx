@@ -7,43 +7,53 @@ import { Bread, Cocktail, Fig, Xmas } from '../../../assets'
 import { RestauranCard } from '../../components/Cards/RestauranCard'
 import { useNavigation } from '@react-navigation/native'
 
-const Categories = [
-  {id: 1, text: 'Vegan', isActive: false},
-  {id: 2, text: 'Categoria2', isActive: false},
-  {id: 3, text: '🌶️ Spicy', isActive: false},
-]
+// const Categories = [
+
+// ]
 
 export const HomeScreen = () => {
 
-  const {getRestaurants} = useAppContext()
+  const {getRestaurants, getCategories} = useAppContext()
 
   const {themeMode} = useAppContext()
   const [filters, setFilters] = useState([])
   const [searching, setSearching] = useState('')
   const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [Restaurants, setRestaurants] = useState([])
+  const [Categories, setCategories] = useState([])
   const navigation = useNavigation()
 
   useEffect( () => {
     setFilters([])
-    const handleFilterSetting = () => {
+    const handleFilterSetting = async () => {
       Categories.forEach(element => {
-        setFilters(prevFilters => [...prevFilters, { text: element.text, isActive: false }]);
-      });
+        setFilters(prevFilters => [...prevFilters, { text: element.text, isActive: false }])
+      })
     }
+
     handleFilterSetting()
+
+    const fetchCategories = async () => {
+      try {
+        const apiData = await getCategories()
+        setCategories(apiData)
+      } catch (error) {
+        console.log('Error fetching restaurantsS:', error)
+      }
+    }
+    fetchCategories()
 
     const fetchRestaurants = async () => {
       try {
         const apiData = await getRestaurants()
         setFilteredRestaurants(apiData)
         setRestaurants(apiData)
-        console.log(apiData)
       } catch (error) {
-        console.log('Error fetching restaurants:', error)
+        console.log('Error fetching restaurantss:', error)
       }
     }
     fetchRestaurants()
+
   }, [])
     
 
@@ -83,7 +93,7 @@ export const HomeScreen = () => {
     setSearching('')
     const activeFilterTexts = activeFilters.filter((filter) => filter.isActive).map(filter => filter.text);
     if (activeFilterTexts.length !== 0) {
-      console.log(activeFilterTexts);
+      // console.log(activeFilterTexts);
       const filtering = Restaurants.filter(restaurant =>
         activeFilterTexts.every(filterText =>
           restaurant.Categories.includes(filterText)

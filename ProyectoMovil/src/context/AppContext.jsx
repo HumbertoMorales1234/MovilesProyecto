@@ -160,7 +160,7 @@ export const AppContextProvider = ({children}) =>{
             })
 
             if (response.status === 200) {
-              console.log(response.data.access)
+              // console.log(response.data.access)
               dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
             } else {
               console.log('Wrong Credentials')
@@ -172,13 +172,13 @@ export const AppContextProvider = ({children}) =>{
 
     const handleRegister = async (username, password, navigation) =>{
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView', {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/oginView', {
               username: username,
               password: password,
             })
 
             if (response.status === 200) {
-              console.log(response.data.access)
+              // console.log(response.data.access)
               dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
             } else {
               console.log('Wrong Credentials')
@@ -290,9 +290,9 @@ export const AppContextProvider = ({children}) =>{
           price: prod.precio,
           dishName: prod.nombre,
           imagen: Xmas,
+          location: negocio.ubicacion,
           Categories: prod.categoria.map((cat) => cat.nombre),
         }))
-        console.log(products)
         return {
           id: negocio.id,
           restaurantName: negocio.nombre,
@@ -322,7 +322,7 @@ export const AppContextProvider = ({children}) =>{
       return apiData.map(platillo => {
         const categories = platillo.categoria.map(cat => cat.nombre)
         return {
-          id: negocio.id,
+          id: platillo.id,
           description: platillo.nombre,
           price: platillo.precio,
           dishName: platillo.nombre,
@@ -335,7 +335,7 @@ export const AppContextProvider = ({children}) =>{
 
     const getDishes= async (restaurant) =>{
         try {
-          const response = await axios.post('http://127.0.0.1:8000/apiMovil/productoView', {
+          const response = await axios.post('http://10.0.2.2:8000/apiMovil/productoView', {
             id_restaurante: restaurant
           })
             if (response.status === 200) {
@@ -347,6 +347,58 @@ export const AppContextProvider = ({children}) =>{
             console.log('Error '+String(error))
           }
         }
+
+    const transformReviews = (apiData) => {
+      return apiData.map(reseña => {
+        return {
+          id: reseña.id,
+          text: reseña.texto,
+          stars: reseña.calificacion,
+        }
+      })
+    }
+    // https://proyecto-movil-api.onrender.com/
+
+    const getReviews= async (id) =>{
+        try {
+          const response = await axios.post('http://10.0.2.2:8000/apiMovil/reseñaProductoView', {
+            nombre: id
+          })
+            if (response.status === 200) {
+              transformedData = transformReviews(response.data)
+              return transformedData
+            } else {
+            }
+          } catch (error) {
+            console.log('Error '+String(error))
+          }
+    }
+
+    const transformCategories = (apiData) => {
+      return apiData.map(categoria => {
+        return {
+          id: categoria.id,
+          text: categoria.nombre,
+          isActive: false,
+        }
+      })
+    }
+
+
+    const getCategories= async () =>{
+        try {
+          const response = await axios.post('http://10.0.2.2:8000/apiMovil/categoriaView', {
+          })
+            if (response.status === 200) {
+              transformedData = transformCategories(response.data)
+              return transformedData
+            } else {
+            }
+          } catch (error) {
+            console.log('Error '+String(error))
+          }
+    }
+
 
      const values = {
         state,
@@ -368,7 +420,9 @@ export const AppContextProvider = ({children}) =>{
         handleEmptyKart,
         handleRegister,
         getRestaurants,
-        getDishes
+        getDishes,
+        getReviews,
+        getCategories
     }
 
      return(
