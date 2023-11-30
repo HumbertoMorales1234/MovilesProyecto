@@ -41,7 +41,7 @@ export const SellerScreen = ({navigation, route}) => {
       if (restaurant && restaurant.Products) {
         setDishes(restaurant.Products)
         setFilteredDishes(restaurant.Products)
-        console.log(restaurant.Products)
+        // console.log(restaurant.Products)
       }
     }
     getDishes()
