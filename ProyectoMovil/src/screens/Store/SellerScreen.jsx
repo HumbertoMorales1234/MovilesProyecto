@@ -94,8 +94,8 @@ export const SellerScreen = ({ navigation, route }) => {
       {isModalVisible && (
         <LocationModal
           hideModal={() => setModalVisible(false)}
-          coordinates={null} // Puedes pasar las coordenadas si las tienes
-          address={'Miguel tello 244 Villas del real'}
+          coordinates={null} 
+          address={'Durango 568 Isaac Arriaga'}
         />
       )}
     </View>

@@ -39,7 +39,7 @@ export const LocationModal = ({ hideModal, coordinates, address }) => {
         <Text style={styles.closeButton}>Close</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>Location for: {address}</Text>
+      <Text style={styles.title}>Location: {address}</Text>
 
       {geocodedLocation ? (
         <View>
@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 60,
+    paddingTop: 90,
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 2,
   },
   errorText: {
     fontSize: 16,
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'blue',
     textDecorationLine: 'underline',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   map: {
-    width: 250,
-    height: 200,
+    width: 420,
+    height: 250,
     marginTop: 10,
   },
 });
