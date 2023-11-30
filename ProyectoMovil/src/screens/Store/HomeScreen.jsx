@@ -19,6 +19,7 @@ export const HomeScreen = () => {
 
   const {themeMode} = useAppContext()
   const [filters, setFilters] = useState([])
+  const [searching, setSearching] = useState('')
   const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [Restaurants, setRestaurants] = useState([])
   const navigation = useNavigation()
@@ -60,7 +61,26 @@ export const HomeScreen = () => {
     Filtering(mappedFilter)
   }
   
+  const handleSearch = (text) =>{
+    handleClearFilters()
+    setSearching(text)
+    const searching = Restaurants.filter(restaurant => restaurant.restaurantName.toLowerCase().includes(text.toLowerCase()))
+    setRestaurants(searching)
+  }
+
+  const handleClearFilters = ()=>{
+    const clearedFilters = filters.map((filter) => {
+      return{
+        ...filter,
+        isActive: filter.isActive=false,
+      }
+    })
+    setFilters(clearedFilters)
+    setRestaurants(Restaurants)
+  }
+
   const Filtering = (activeFilters) => {
+    setSearching('')
     const activeFilterTexts = activeFilters.filter((filter) => filter.isActive).map(filter => filter.text);
     if (activeFilterTexts.length !== 0) {
       console.log(activeFilterTexts);
@@ -82,11 +102,14 @@ export const HomeScreen = () => {
   return (
     <View style={styles(themeMode).container}>
         <View>
-          <SearchBar placeholder={'Search for something tasty...'}/>
+          <SearchBar placeholder={'Search for something tasty...'} value={searching} onChangeText={(value) => handleSearch(value)}/>
         </View>
         
         <View style={{height: 80, gap: 10, paddingHorizontal: 20}}>
-          <Text style={styles(themeMode).tittle}>Categories</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
+            <Text style={styles(themeMode).tittle}>Categories</Text>
+            <CategoryButton categoryName={'Clear Filters'} onPress={() => handleClearFilters()} />
+          </View>
             <FlatList horizontal data={filters}
             renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
         </View>
