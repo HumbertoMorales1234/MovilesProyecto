@@ -40,6 +40,7 @@ function reducer(state, action){
             else{
                 uri = defaultPic
             }
+            console.log("VALOR DE USER:"+action.user)
             return{
                 ...state,
                 username: uri,
@@ -147,7 +148,7 @@ export const AppContextProvider = ({children}) =>{
         checkData()
     }, [])
 
-    const handleLogIn = (username, password) =>{
+    const handleLogIn = async (username, password) =>{
         //Agregar el acceso a la BD
         // if(username==='Beto' && password==='Prueba12'){
         //     dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
@@ -345,6 +346,7 @@ export const AppContextProvider = ({children}) =>{
           } catch (error) {
             console.log('Error '+String(error))
           }
+        }
 
      const values = {
         state,

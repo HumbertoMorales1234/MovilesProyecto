@@ -17,12 +17,13 @@ export const DishCard = ({onPress, dish}) => {
     const hideModal = () =>{
         setModalVisibility(false)
     }
+    
 
   return (
-    <TouchableOpacity style={styles(themeMode).container}>
-        <Image source={Ramen} style={styles(themeMode).image}/>
-    //<TouchableOpacity style={styles(themeMode).container} onPress={muestraModal}>
-    //    <Image source={dish.image} style={styles(themeMode).image}/>
+    // <TouchableOpacity style={styles(themeMode).container}>
+    //     <Image source={Ramen} style={styles(themeMode).image}/>
+    <TouchableOpacity style={styles(themeMode).container} onPress={muestraModal}>
+        <Image source={dish.image} style={styles(themeMode).image}/>
         <View style={{ width: 150, alignItems: 'center'}}>
             <Text style={styles(themeMode).title}>{dish.dishName}</Text>
         </View>
