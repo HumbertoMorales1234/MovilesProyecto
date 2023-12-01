@@ -4,28 +4,40 @@ import { StyleSheet, Text, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { MyReviewCard } from '../../components/Cards/MyReviewCard'
 
-const my_Reviews = [
-    {id:1, texto: 'Esta bueno',                         calificacion: 4, producto: 'Ramen de Pollo'},
-    {id:2, texto: 'Estan exquisitos',                   calificacion: 5, producto: 'Tacos Dorados'},
-    {id:3, texto: 'El pollo loco siempre tan bueno',    calificacion: 5, producto: 'Pollo Loco'},
-    {id:4, texto: 'Estaba frío pero decente',           calificacion: 3, producto: 'Sope de pollo'},
-    {id:5, texto: 'Le faltaba azúcar',                  calificacion: 3, producto: 'Agua de jamaica'},
-    {id:6, texto: 'Estaba fría y sabia raro',           calificacion: 2, producto: 'Hamburguesa Tradicional'},
-]
+// const my_Reviews = [
+//     {id:1, texto: 'Esta bueno',                         calificacion: 4, producto: 'Ramen de Pollo'},
+//     {id:2, texto: 'Estan exquisitos',                   calificacion: 5, producto: 'Tacos Dorados'},
+//     {id:3, texto: 'El pollo loco siempre tan bueno',    calificacion: 5, producto: 'Pollo Loco'},
+//     {id:4, texto: 'Estaba frío pero decente',           calificacion: 3, producto: 'Sope de pollo'},
+//     {id:5, texto: 'Le faltaba azúcar',                  calificacion: 3, producto: 'Agua de jamaica'},
+//     {id:6, texto: 'Estaba fría y sabia raro',           calificacion: 2, producto: 'Hamburguesa Tradicional'},
+// ]
 
 export const MyReviewsScreen = () => {
-    const {themeMode,} = useAppContext()
+    const {themeMode, getMyReviews} = useAppContext()
     const [reviews, setReviews] = useState([])
+    const [myReviews, setmyReviews] = useState([])
 
-    useEffect(() =>{
-        const reviewFetching = () => {
-          my_Reviews.forEach(review => {
-            setReviews(prevFilters => [...prevFilters, { texto: review.texto, calificacion: review.calificacion, producto: review.producto }]);
-          });
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const apiData = await getMyReviews();
+          setmyReviews(apiData);
+    
+          const processedReviews = apiData.map(review => ({
+            texto: review.texto,
+            calificacion: review.calificacion,
+            producto: review.producto,
+          }));
+    
+          setReviews(processedReviews);
+        } catch (error) {
+          console.log('Error fetching reviews:', error);
         }
-        setReviews([])
-        reviewFetching()
-    }, [])
+      };
+    
+      fetchData();
+    }, []);
 
   return (
     <View style={styles(themeMode).container}>
