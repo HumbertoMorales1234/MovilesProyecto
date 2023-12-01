@@ -5,6 +5,7 @@ import { CategoryButton } from '../../components/Buttons/CategoryButton';
 import { FlatList } from 'react-native-gesture-handler';
 import { DishCard } from '../../components/Cards/DishCard';
 import { LocationModal } from '../../components/Modals/LocationModal';
+
 import { IconButton } from '../../components/Buttons/IconButton';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +15,7 @@ export const SellerScreen = ({ navigation, route }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const { restaurant } = route.params;
+
   const [filteredDishes, setFilteredDishes] = useState([]);
   const [dishes, setDishes] = useState([]);
   const [filters, setFilters] = useState([]);
@@ -70,10 +72,12 @@ export const SellerScreen = ({ navigation, route }) => {
   return (
     <View style={styles(themeMode).container}>
       <Image source={restaurant.image} style={styles(themeMode).image} />
+
       <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap: 30, width: '100%', paddingVertical: 10}}>
             <IconButton iconName={'arrow-left'} onPress={()=> navigation.goBack()} />
             <Text style={styles(themeMode).title}>{restaurant.restaurantName}</Text>
         </View>
+
       <View style={{ height: 80, gap: 10, paddingHorizontal: 20 }}>
         <Text style={styles(themeMode).subTitle}>Categories</Text>
         <FlatList
@@ -89,6 +93,7 @@ export const SellerScreen = ({ navigation, route }) => {
         />
       </View>
 
+
       <View style={{ gap: 10, flex: 1, paddingHorizontal: 20 }}>
         <Text style={styles(themeMode).subTitle}>Available Products</Text>
         <FlatList
@@ -96,6 +101,7 @@ export const SellerScreen = ({ navigation, route }) => {
           renderItem={({ item }) => <DishCard dish={item} />}
         />
       </View>
+
 
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <Text style={styles(themeMode).subTitle}>Location</Text>

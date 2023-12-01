@@ -19,7 +19,9 @@ export const MyReviewsScreen = () => {
     const {themeMode, getMyReviews} = useAppContext()
     const [reviews, setReviews] = useState([])
     const [myReviews, setmyReviews] = useState([])
+
     const navigation = useNavigation()
+
 
     useEffect(() => {
       const fetchData = async () => {

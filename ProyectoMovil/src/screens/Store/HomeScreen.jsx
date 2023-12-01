@@ -64,7 +64,9 @@ export const HomeScreen = () => {
       (restaurant) =>
         restaurant.restaurantName.toLowerCase().includes(text.toLowerCase())
     )
-    setRestaurants(filtered)
+
+    setFilteredRestaurants(filtered)
+
   }
 
   const handleClearFilters = () => {
@@ -74,7 +76,9 @@ export const HomeScreen = () => {
     }))
 
     setFilters(clearedFilters)
-    setRestaurants(filteredRestaurants)
+
+    setFilteredRestaurants(Restaurants)
+
   }
 
   const Filtering = (activeFilters) => {
@@ -147,6 +151,7 @@ const styles = (theme) =>
     },
     title: {
       color: theme.GENERALTEXT,
+
       fontSize: 25,
       fontWeight: '500',
     },

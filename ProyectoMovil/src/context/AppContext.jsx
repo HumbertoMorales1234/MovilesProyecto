@@ -301,12 +301,6 @@ export const AppContextProvider = ({children}) =>{
         dispatch({type: CONTEXT_ACTIONS.UPDATE_LOCATION, location: location})
     }
 
-
-    const handleChangePass = (newPass) =>{
-        dispatch({type: CONTEXT_ACTIONS.CHANGE_PASS, password: newPass})
-    }
-
-
     const transformRestaurants = (apiData) => {
       return apiData.map(negocio => {
         const categories = negocio.categoria.map(cat => cat.nombre)
@@ -467,7 +461,7 @@ export const AppContextProvider = ({children}) =>{
         handleAddCard,
 
         handleUpdateLocation,
-        
+
         handleThemeChange,
         kartProducts, 
         handleAddToKart, 
@@ -475,9 +469,9 @@ export const AppContextProvider = ({children}) =>{
         handleReduceCuantity,
         handleIncreaseCuantity,
         handleEmptyKart,
-        
+    
         handleRegister,
-        
+
         getRestaurants,
         getDishes,
         getReviews,
