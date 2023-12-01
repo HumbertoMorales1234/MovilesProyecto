@@ -70,6 +70,10 @@ export const ProfileScreen = () => {
             <Text style={styles(themeMode).nameText}>{state.username}</Text>
         </View>
 
+        <IconTextButton iconName={'key'} text={'Change Password'} onPress={() =>  navigation.navigate('ChangePass')}/>
+
+        <IconTextButton iconName={'user'} text={'My Data'} onPress={() =>  navigation.navigate('MyData')}/>
+
         <IconTextButton iconName={'credit-card'} text={'My Cards'} onPress={() =>  navigation.navigate('MyCards')}/>
 
         <IconTextButton iconName={'edit-3'} text={'My Reviews'} onPress={() =>  navigation.navigate('MyReviews')}/>
