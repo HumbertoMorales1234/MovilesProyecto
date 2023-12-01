@@ -64,7 +64,7 @@ export const HomeScreen = () => {
       (restaurant) =>
         restaurant.restaurantName.toLowerCase().includes(text.toLowerCase())
     )
-    setRestaurants(filtered)
+    setFilteredRestaurants(filtered)
   }
 
   const handleClearFilters = () => {
@@ -74,7 +74,7 @@ export const HomeScreen = () => {
     }))
 
     setFilters(clearedFilters)
-    setRestaurants(filteredRestaurants)
+    setFilteredRestaurants(Restaurants)
   }
 
   const Filtering = (activeFilters) => {
@@ -107,35 +107,12 @@ export const HomeScreen = () => {
         
         <View style={{height: 80, gap: 10, paddingHorizontal: 20}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-            <Text style={styles(themeMode).tittle}>Categories</Text>
+            <Text style={styles(themeMode).title}>Categories</Text>
             <CategoryButton categoryName={'Clear Filters'} onPress={() => handleClearFilters()} />
           </View>
             <FlatList horizontal data={filters} showsHorizontalScrollIndicator={false}
             renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
         </View>
-
-      <View style={{ height: 80, gap: 10, paddingHorizontal: 20 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20 }}>
-          <Text style={styles(themeMode).title}>Categories</Text>
-          <CategoryButton
-            categoryName={'Clear Filters'}
-            onPress={() => handleClearFilters()}
-          />
-        </View>
-        <FlatList
-          horizontal
-          data={filters}
-          renderItem={({ item }) => (
-            <CategoryButton
-              categoryName={item.text}
-              isSelected={item.isActive}
-              onPress={() => {
-                handlePressFilter({ text: item.text })
-              }}
-            />
-          )}
-        />
-      </View>
 
       <View style={{ gap: 10, flex: 1 }}>
         <Text style={styles(themeMode).title}>Restaurants and Sellers</Text>
