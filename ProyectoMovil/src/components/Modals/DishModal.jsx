@@ -38,7 +38,9 @@ export const DishModal = ({dish, hideModal}) => {
   }
   
   const increaseCounter = () =>{
-    setCounter(counter+1)
+    if(counter<dish.existance){
+      setCounter(counter+1)
+    }
   }
 
   const handleAdd = (hideModal) =>{

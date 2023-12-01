@@ -109,7 +109,7 @@ export const HomeScreen = () => {
             <Text style={styles(themeMode).tittle}>Categories</Text>
             <CategoryButton categoryName={'Clear Filters'} onPress={() => handleClearFilters()} />
           </View>
-            <FlatList horizontal data={filters}
+            <FlatList horizontal data={filters} showsHorizontalScrollIndicator={false}
             renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
         </View>
 

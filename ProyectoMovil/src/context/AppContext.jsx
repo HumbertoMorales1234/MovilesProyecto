@@ -31,16 +31,17 @@ function reducer(state, action){
 //*
         case CONTEXT_ACTIONS.LOG_IN:
             var uri
-            if(action.user){
-                uri = action.user
+            if(action.userpic){
+                uri = action.userpic
             }
             else{
                 uri = defaultPic
             }
             return{
                 ...state,
-                username: uri,
+                username: action.user,
                 loggedIn: true,
+                userpic: uri,
             }
 //---------------------------------------------------------------
 //*
@@ -213,7 +214,7 @@ export const AppContextProvider = ({children}) =>{
 
     const handleIncreaseCuantity = (dishName) =>{
         const mappedKart = kartProducts.map(product =>{
-            if (product.dish.dishName === dishName){
+            if (product.dish.dishName === dishName && product.cantidad<product.dish.existance){
             return {
                 ...product,
                 cantidad: product.cantidad+1,

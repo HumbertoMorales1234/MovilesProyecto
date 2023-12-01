@@ -16,10 +16,10 @@ const Categories = [
 ]
 
 const dishes = [
-  {id: 1, description: 'Here should be a description of the product', price: '140.00', dishName:'Ramen de Verduras', image: Ramen, Categories: ['🌿 Vegan', '🌶️ Spicy']},
-  {id: 2, description: 'Here should be a description of the product', price: '170.00', dishName:'Ramen de Pollo', image: Ramen, Categories: ['🌶️ Spicy']},
-  {id: 3, description: 'Here should be a description of the product', price: '180.00', dishName:'Ramen de Res', image: Ramen, Categories: ['🌶️ Spicy']},
-  {id: 4, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
+  {id: 1, existance:30, description: 'Here should be a description of the product', price: '140.00', dishName:'Ramen de Verduras', image: Ramen, Categories: ['🌿 Vegan', '🌶️ Spicy']},
+  {id: 2, existance:30, description: 'Here should be a description of the product', price: '170.00', dishName:'Ramen de Pollo', image: Ramen, Categories: ['🌶️ Spicy']},
+  {id: 3, existance:30, description: 'Here should be a description of the product', price: '180.00', dishName:'Ramen de Res', image: Ramen, Categories: ['🌶️ Spicy']},
+  {id: 4, existance:30, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
 ]
 
 export const SellerScreen = ({navigation, route}) => {
@@ -73,7 +73,7 @@ export const SellerScreen = ({navigation, route}) => {
 
         <View style={{height: 80, gap: 10, paddingHorizontal: 20}}>
           <Text style={styles(themeMode).subTitle}>Categories</Text>
-            <FlatList horizontal data={filters}
+            <FlatList horizontal data={filters} showsHorizontalScrollIndicator={false}
             renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
         </View>
 
