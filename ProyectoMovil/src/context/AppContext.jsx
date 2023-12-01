@@ -15,6 +15,7 @@ const initialState = {
     loggedIn: false,
     userCards: [],
     userLocation: '',
+    token: ''
 }
 
 const CONTEXT_ACTIONS = {
@@ -40,11 +41,12 @@ function reducer(state, action){
             else{
                 uri = defaultPic
             }
-            console.log("VALOR DE USER:"+action.user)
+            // console.log("VALOR DE USER:"+action)
             return{
                 ...state,
                 username: uri,
                 loggedIn: true,
+                token: action.user
             }
 //---------------------------------------------------------------
 //*
@@ -172,7 +174,7 @@ export const AppContextProvider = ({children}) =>{
 
     const handleRegister = async (username, password, navigation) =>{
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/oginView', {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/loginView', {
               username: username,
               password: password,
             })
@@ -374,6 +376,35 @@ export const AppContextProvider = ({children}) =>{
           }
     }
 
+    const transformMyReviews = (apiData) => {
+      return apiData.map(reseña => {
+        return {
+          id: reseña.id,
+          texto: reseña.texto,
+          calificacion: reseña.calificacion,
+          producto: reseña.id_producto.nombre
+        }
+      })
+    }
+
+    const getMyReviews= async () =>{
+      try {
+        console.log(state.token)
+        const response = await axios.post('http://10.0.2.2:8000/apiMovil/myReseñaProductoView', {
+        }, {
+          headers:{
+          "Authorization": 'Bearer '+ state.token
+        }})
+          if (response.status === 200) {
+            transformedData = transformMyReviews(response.data)
+            return transformedData
+          } else {
+          }
+        } catch (error) {
+          console.log('Error '+String(error))
+        }
+  }
+
     const transformCategories = (apiData) => {
       return apiData.map(categoria => {
         return {
@@ -422,7 +453,8 @@ export const AppContextProvider = ({children}) =>{
         getRestaurants,
         getDishes,
         getReviews,
-        getCategories
+        getCategories,
+        getMyReviews
     }
 
      return(
