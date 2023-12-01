@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { Ramen } from '../../../assets'
 import { CategoryButton } from '../../components/Buttons/CategoryButton'
 import { FlatList } from 'react-native-gesture-handler'
 import { DishCard } from '../../components/Cards/DishCard'
+import { LocationModal } from '../../components/Modals/LocationModal'
 
 // const Categories = [
 //   {id: 1, text: '🌿 Vegan', isActive: false},
@@ -28,6 +29,7 @@ const Categories = [
 //   {id: 4, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
 // ]
 
+  const [isModalVisible, setModalVisible] = useState(false);
 export const SellerScreen = ({navigation, route}) => {
   const {restaurant} = route.params
   const {themeMode} = useAppContext()
@@ -45,65 +47,75 @@ export const SellerScreen = ({navigation, route}) => {
       }
     }
     getDishes()
-
     const handleFilterSetting = () => {
-      Categories.forEach(element => {
-        setFilters(prevFilters => [...prevFilters, { text: element.text, isActive: false }]);
+      Categories.forEach((element) => {
+        setFilters((prevFilters) => [...prevFilters, { text: element.text, isActive: false }]);
       });
-    }
-    handleFilterSetting()
-  }, [])
+    };
+    handleFilterSetting();
+  }, []);
 
-  const handlePressFilter = (filterName) =>{
-    const mappedFilter = filters.map(filter =>{
-      if (filter.text === filterName.text){
-        return { 
-          text: filter.text, 
-          isActive: !(filter.isActive), 
-        }
+  const handlePressFilter = (filterName) => {
+    const mappedFilter = filters.map((filter) => {
+      if (filter.text === filterName.text) {
+        return {
+          text: filter.text,
+          isActive: !filter.isActive,
+        };
       }
-      return filter
-    })
-    setFilters(mappedFilter)
-    Filtering(mappedFilter)
-  }
+      return filter;
+    });
+    setFilters(mappedFilter);
+    Filtering(mappedFilter);
+  };
 
   const Filtering = (activeFilters) => {
-    const activeFilterTexts = activeFilters.filter((filter) => filter.isActive).map(filter => filter.text);
+    const activeFilterTexts = activeFilters.filter((filter) => filter.isActive).map((filter) => filter.text);
     if (activeFilterTexts.length !== 0) {
-      const filtering = dishes.filter(dish =>
-        activeFilterTexts.every(filterText =>
-          dish.Categories.includes(filterText)
-        )
+      const filtering = dishes.filter((dish) =>
+        activeFilterTexts.every((filterText) => dish.Categories.includes(filterText))
       );
       setFilteredDishes(filtering);
     } else {
       setFilteredDishes(dishes);
     }
-  }; 
- 
+  };
+
   return (
     <View style={styles(themeMode).container}>
-      <Image source={restaurant.image} style={styles(themeMode).image}/>
-        <Text style={styles(themeMode).title}>{restaurant.restaurantName}</Text>
+      <Image source={restaurant.image} style={styles(themeMode).image} />
+      <Text style={styles(themeMode).title}>{restaurant.restaurantName}</Text>
 
-        <View style={{height: 80, gap: 10, paddingHorizontal: 20}}>
-          <Text style={styles(themeMode).subTitle}>Categories</Text>
-            <FlatList horizontal data={filters}
-            renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
-        </View>
+      <View style={{ height: 80, gap: 10, paddingHorizontal: 20 }}>
+        <Text style={styles(themeMode).subTitle}>Categories</Text>
+        <FlatList
+          horizontal
+          data={filters}
+          renderItem={({ item }) => (
+            <CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => handlePressFilter({ text: item.text })} />
+          )}
+        />
+      </View>
 
-        <View style={{gap: 10, flex: 1, paddingHorizontal: 20}}>
-          <Text style={styles(themeMode).subTitle}>Available Products</Text>
-          <FlatList
-           data={filteredDishes}
-           renderItem={({item}) => {return(<DishCard dish={item}/>)} }
-          />
-        </View>
-        
+      <View style={{ gap: 10, flex: 1, paddingHorizontal: 20 }}>
+        <Text style={styles(themeMode).subTitle}>Available Products</Text>
+        <FlatList data={filteredDishes} renderItem={({ item }) => <DishCard dish={item} />} />
+      </View>
+
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles(themeMode).subTitle}>Location</Text>
+      </TouchableOpacity>
+
+      {isModalVisible && (
+        <LocationModal
+          hideModal={() => setModalVisible(false)}
+          coordinates={null} 
+          address={'Durango 568 Isaac Arriaga'}
+        />
+      )}
     </View>
-  )
-}
+  );
+};
 
 const styles = (theme) => StyleSheet.create({
   container:{
