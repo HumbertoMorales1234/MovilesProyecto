@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import { FlatList, Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { IconTextButton } from '../Buttons/IconTextButton'

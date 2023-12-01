@@ -31,14 +31,13 @@ export const HomeScreen = () => {
       })
     }
 
-    handleFilterSetting()
 
     const fetchCategories = async () => {
       try {
         const apiData = await getCategories()
         setCategories(apiData)
       } catch (error) {
-        console.log('Error fetching restaurantsS:', error)
+        console.log('Error fetching restaurants:', error)
       }
     }
     fetchCategories()
@@ -53,6 +52,8 @@ export const HomeScreen = () => {
       }
     }
     fetchRestaurants()
+
+    handleFilterSetting()
 
   }, [])
     
