@@ -12,7 +12,10 @@ const defaultPic= 'https://hips.hearstapps.com/es.h-cdn.co/fotoes/images/noticia
 const initialState = {
     username: '',
     userpic: '', 
+    userphone: 0,
+
     loggedIn: false,
+    
     userCards: [],
     userLocation: '',
     token: ''
@@ -23,6 +26,9 @@ const CONTEXT_ACTIONS = {
     LOG_OUT: 'LOG_OUT',
     RECOVER_USER: 'RECOVER_USER',
     UPDATE_USER: 'UPDATE_USER',
+
+    CHANGE_PASS: 'CHANGE_PASS',
+
     ADD_CARD: 'ADD_CARD',
     DELETE_CARD: 'DELETE_CARD',
     EDIT_CARD: 'EDIT_CARD',
@@ -67,18 +73,28 @@ function reducer(state, action){
                 userpic: action.userpic,
                 username: action.user,
                 userCards: action.userCards,
+                userphone: action.userphone,
             }            
 //----------------------------------------------------------------
 //*
         case CONTEXT_ACTIONS.UPDATE_USER:
+            var username =state.username
             var uri = state.userpic
-            if(action.userpic){
+            var userphone = state.userphone
+            if(action.userpic !== ''){
                 uri = action.userpic
+            }
+            if(action.username !== ''){
+                username = action.username
+            }
+            if(action.userphone !== ''){
+                userphone = action.userphone
             }
             return{
                 ...state,
-                userpic: action.userpic,
-                
+                userpic: uri,
+                username: username,
+                userphone: userphone,
             }            
 //----------------------------------------------------------------
 //*
@@ -114,12 +130,16 @@ function reducer(state, action){
                 ...state,
                 userCards: mappedCards,
             }
-            
+//----------------------------------------------------------------
+//*            
         case CONTEXT_ACTIONS.UPDATE_LOCATION:
             return{
                 ...state,
                 userLocation: action.location,
             }
+//----------------------------------------------------------------
+//*            
+
     }
 }
 
@@ -136,7 +156,8 @@ export const AppContextProvider = ({children}) =>{
                 const saving = await SecureStore.getItemAsync('userData')
                 if(saving){
                     const userData = (JSON.parse(saving))
-                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, user: userData.username , userpic: userData.userpic, userCards: userData.userCards, userLocation: userData.userLocation})
+                    dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, user: userData.username , userpic: userData.userpic, userCards: userData.userCards, 
+                        userLocation: userData.userLocation, userphone: userData.userphone, })
                 }
 
                 const currentTheme = await SecureStore.getItemAsync('themeMode')
@@ -195,8 +216,8 @@ export const AppContextProvider = ({children}) =>{
         await SecureStore.setItemAsync('userData', JSON.stringify(state))
     }
 
-    const handleUpdateUser = (userpic) =>{
-        dispatch({type: CONTEXT_ACTIONS.UPDATE_USER, userpic: userpic})
+    const handleUpdateUser = (userpic, username, userphone) =>{
+        dispatch({type: CONTEXT_ACTIONS.UPDATE_USER, userpic: userpic, username:username, userphone:userphone})
     }
 
     const handleLogOut = async () =>{
@@ -266,10 +287,6 @@ export const AppContextProvider = ({children}) =>{
 
     const handleEmptyKart = () =>{
         setKartProducts([])
-    }
-
-    const handleUpdateCard = (card) =>{
-        dispatch({type: CONTEXT_ACTIONS.EDIT_CARD, card: card})
     }
     
     const handleDeleteCard = (card) =>{
@@ -439,10 +456,12 @@ export const AppContextProvider = ({children}) =>{
         handleLogIn,
         handleLogOut,
         handleUpdateUser,
-        handleUpdateCard,
+
         handleDeleteCard,
         handleAddCard,
+
         handleUpdateLocation,
+
         handleThemeChange,
         kartProducts, 
         handleAddToKart, 
@@ -450,7 +469,9 @@ export const AppContextProvider = ({children}) =>{
         handleReduceCuantity,
         handleIncreaseCuantity,
         handleEmptyKart,
+    
         handleRegister,
+
         getRestaurants,
         getDishes,
         getReviews,

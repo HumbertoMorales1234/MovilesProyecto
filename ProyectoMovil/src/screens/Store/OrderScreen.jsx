@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { FlatList } from 'react-native'
 import { ReviewDishCard } from '../../components/Cards/ReviewDishCard'
+import { useNavigation } from '@react-navigation/native'
+import { IconButton } from '../../components/Buttons/IconButton'
 
 export const OrderScreen = ({navigation, route}) => {
     const {themeMode} = useAppContext()
@@ -15,7 +17,10 @@ export const OrderScreen = ({navigation, route}) => {
 
   return (
     <View style={styles(themeMode).container} >
-        <Text style={styles(themeMode).title} >Detalles del pedido</Text>
+        <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap: 30, width: '100%', paddingVertical: 10}}>
+            <IconButton iconName={'arrow-left'} onPress={()=> navigation.goBack()} />
+            <Text style={styles(themeMode).title} >Detalles del pedido</Text>
+        </View>
         
         <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
             <Text style={styles(themeMode).date} >Fecha de orden:</Text>

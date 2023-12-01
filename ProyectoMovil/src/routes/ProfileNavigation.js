@@ -7,6 +7,8 @@ import { ProfileScreen } from '../screens/Store/ProfileScreen'
 import { MyCardsScreen } from '../screens/Store/MyCardsScreen'
 import { MyReviewsScreen } from '../screens/Store/MyReviewsScreen'
 import { MyLocationScreen } from '../screens/Store/MyLocationScreen'
+import { ChangePassScreen } from '../screens/Store/ChangePassScreen'
+import { MyDataScreen } from '../screens/Store/MyDataScreen'
 
 const Stack = createStackNavigator()
 
@@ -18,6 +20,8 @@ export const ProfileNavigation = () => {
             <Stack.Screen name='MyCards' component={MyCardsScreen} options={{headerShown: false}}/>
             <Stack.Screen name='MyReviews' component={MyReviewsScreen} options={{headerShown: false}}/>
             <Stack.Screen name='MyLocation' component={MyLocationScreen} options={{headerShown: false}}/>
+            <Stack.Screen name='ChangePass' component={ChangePassScreen} options={{headerShown: false}}/>
+            <Stack.Screen name='MyData' component={MyDataScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

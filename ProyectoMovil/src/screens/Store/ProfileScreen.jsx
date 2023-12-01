@@ -11,42 +11,8 @@ import { THEME } from '../../theme/Colors';
 
 
 export const ProfileScreen = () => {
-    const {themeMode, state, handleUpdateUser, handleThemeChange} = useAppContext()
-    const [statusLibrary, requestLibraryPermission] = ImagePicker.useMediaLibraryPermissions();
+    const {themeMode, state, handleThemeChange} = useAppContext()
     const navigation = useNavigation()
-
-
-    useEffect(() => {
-        const getPerms = async () => {
-            await requestLibraryPermission()
-        }
-        getPerms()
-    }, [])
-
-    const loadFile = async () => {
-        try{
-            if(statusLibrary){
-                const result = await ImagePicker.launchImageLibraryAsync({
-                   mediaTypes: ImagePicker.MediaTypeOptions.All,
-                   allowsEditing: false,
-                   aspect: [3, 3],
-                   quality: 1,
-                   exif: true,
-                   allowsEditing: true,
-               })
-
-               if(!result.canceled){
-                   handleUpdateUser(result.assets[0].uri)
-               }
-            }
-        } catch (error){
-            console.log(error)
-        }        
-    }
-
-    const handlePressedMyCards = () =>{
-        navigation.navigate('MyCards')
-      }
     
     const themeButton = () => {
       if(themeMode === THEME.LIGHT){
@@ -63,12 +29,15 @@ export const ProfileScreen = () => {
   return (
     <View style={styles(themeMode).container}>
         <View style={{alignItems: 'center'}}>
-            <TouchableOpacity style={styles(themeMode).imageContainer} onPress={() => loadFile()}>
+            <View style={styles(themeMode).imageContainer}>
                 <Image source={{uri: state.userpic}} style={styles(themeMode).image}/>
-                <Feather name="edit" size={24} color={themeMode.GENERALTEXT} style={styles(themeMode).editIcon}/>
-            </TouchableOpacity>
+            </View>
             <Text style={styles(themeMode).nameText}>{state.username}</Text>
         </View>
+
+        <IconTextButton iconName={'key'} text={'Change Password'} onPress={() =>  navigation.navigate('ChangePass')}/>
+
+        <IconTextButton iconName={'user'} text={'Update my Data'} onPress={() =>  navigation.navigate('MyData')}/>
 
         <IconTextButton iconName={'credit-card'} text={'My Cards'} onPress={() =>  navigation.navigate('MyCards')}/>
 
@@ -93,14 +62,14 @@ const styles = (theme) => StyleSheet.create({
         borderWidth: 2, 
         borderColor: theme.GENERALTEXT,
         borderRadius: 200,
-        width: 120,
-        height: 120,
+        width: 215,
+        height: 215,
         alignItems: 'center',
         justifyContent: 'center'
     },
     image:{
-        width: 100, 
-        height: 100,
+        width: 200, 
+        height: 200,
         borderRadius: 200,
     },
     editIcon:{

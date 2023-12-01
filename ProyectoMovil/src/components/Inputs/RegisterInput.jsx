@@ -3,7 +3,7 @@ import { View, Text, TextInput } from 'react-native'
 import { Feather } from '@expo/vector-icons'; // mail
 import { useAppContext } from '../../hooks/useAppContext';
 
-export const RegisterInput = ({iconName, secure, label, onChangeText, inputValue}) => {
+export const RegisterInput = ({iconName, secure, label, onChangeText, inputValue, type, max, keyboardType}) => {
 
   const {themeMode} = useAppContext()
   
@@ -14,7 +14,7 @@ export const RegisterInput = ({iconName, secure, label, onChangeText, inputValue
             <Feather name={iconName} size={24} color={themeMode.GENERALTEXT} />
             <Text style={{color: themeMode.GENERALTEXT, fontSize: 17}}>{label}</Text>
         </View>
-        <TextInput value={inputValue} onChangeText={onChangeText} secureTextEntry={secure} 
+        <TextInput value={inputValue} onChangeText={onChangeText} secureTextEntry={secure} textContentType={type} maxLength={max} keyboardType={keyboardType}
         style={{borderBottomWidth: 1, height: 40, borderColor:themeMode.GENERALTEXT, color:themeMode.GENERALTEXT, paddingHorizontal: 20, marginBottom: 10}}/>
     </View>
   )

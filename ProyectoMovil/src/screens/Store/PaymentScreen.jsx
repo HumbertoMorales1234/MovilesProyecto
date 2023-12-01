@@ -4,6 +4,7 @@ import { useAppContext } from '../../hooks/useAppContext'
 import { PagoButton } from '../../components/Buttons/PagoButton'
 import { CardSelectModal } from '../../components/Modals/CardSelectModal'
 import { ConfirmationButton } from '../../components/Buttons/ConfirmationButton'
+import { IconButton } from '../../components/Buttons/IconButton'
 
 export const PaymentScreen = ({navigation, route}) => {
     const {total} = route.params
@@ -43,6 +44,11 @@ export const PaymentScreen = ({navigation, route}) => {
     }
   return (
     <View style={styles(themeMode).container}>
+        <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap: 30, width: '100%', paddingVertical: 10}}>
+            <IconButton iconName={'arrow-left'} onPress={()=> navigation.goBack()} />
+            <Text style={styles(themeMode).title} >Payment</Text>
+        </View>
+
         <Text style={styles(themeMode).title}>Total: {total} $</Text>
         <View style={{justifyContent: 'center', alignItems: 'center', gap: 40}}>
           <Text style={styles(themeMode).subtitle}>Selecciona tu método de pago: </Text>
@@ -77,7 +83,7 @@ const styles = (theme) => StyleSheet.create({
     },
     title:{
         color: theme.GENERALTEXT,
-        fontWeight: '700',
+        fontWeight: '500',
         fontSize: 30,
     },
     subtitle:{
