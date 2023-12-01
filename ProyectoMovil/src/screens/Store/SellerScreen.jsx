@@ -29,8 +29,9 @@ const Categories = [
 //   {id: 4, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
 // ]
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  
 export const SellerScreen = ({navigation, route}) => {
+  const [isModalVisible, setModalVisible] = useState(false);
   const {restaurant} = route.params
   const {themeMode} = useAppContext()
   const [filteredDishes, setFilteredDishes] = useState([])
