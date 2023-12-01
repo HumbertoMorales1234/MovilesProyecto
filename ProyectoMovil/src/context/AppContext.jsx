@@ -12,7 +12,7 @@ const defaultPic= 'https://hips.hearstapps.com/es.h-cdn.co/fotoes/images/noticia
 const initialState = {
     username: '',
     userpic: '', 
-    userPhone: 0,
+    userphone: 0,
 
     loggedIn: false,
     
@@ -301,12 +301,12 @@ export const AppContextProvider = ({children}) =>{
         dispatch({type: CONTEXT_ACTIONS.UPDATE_LOCATION, location: location})
     }
 
-<<<<<<< HEAD
+
     const handleChangePass = (newPass) =>{
         dispatch({type: CONTEXT_ACTIONS.CHANGE_PASS, password: newPass})
     }
 
-=======
+
     const transformRestaurants = (apiData) => {
       return apiData.map(negocio => {
         const categories = negocio.categoria.map(cat => cat.nombre)
@@ -455,7 +455,6 @@ export const AppContextProvider = ({children}) =>{
     }
 
 
->>>>>>> 6caa151b689207eb35246210ee70718153fdf305
      const values = {
         state,
         saveUser,
@@ -463,14 +462,12 @@ export const AppContextProvider = ({children}) =>{
         handleLogIn,
         handleLogOut,
         handleUpdateUser,
-<<<<<<< HEAD
 
-=======
-        handleUpdateCard,
->>>>>>> 6caa151b689207eb35246210ee70718153fdf305
         handleDeleteCard,
         handleAddCard,
+
         handleUpdateLocation,
+        
         handleThemeChange,
         kartProducts, 
         handleAddToKart, 
@@ -478,7 +475,9 @@ export const AppContextProvider = ({children}) =>{
         handleReduceCuantity,
         handleIncreaseCuantity,
         handleEmptyKart,
+        
         handleRegister,
+        
         getRestaurants,
         getDishes,
         getReviews,

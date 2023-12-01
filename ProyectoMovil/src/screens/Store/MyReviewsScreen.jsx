@@ -3,6 +3,8 @@ import { useAppContext } from '../../hooks/useAppContext'
 import { StyleSheet, Text, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { MyReviewCard } from '../../components/Cards/MyReviewCard'
+import { IconButton } from '../../components/Buttons/IconButton'
+import { useNavigation } from '@react-navigation/native'
 
 // const my_Reviews = [
 //     {id:1, texto: 'Esta bueno',                         calificacion: 4, producto: 'Ramen de Pollo'},
@@ -17,6 +19,7 @@ export const MyReviewsScreen = () => {
     const {themeMode, getMyReviews} = useAppContext()
     const [reviews, setReviews] = useState([])
     const [myReviews, setmyReviews] = useState([])
+    const navigation = useNavigation()
 
     useEffect(() => {
       const fetchData = async () => {
@@ -41,7 +44,10 @@ export const MyReviewsScreen = () => {
 
   return (
     <View style={styles(themeMode).container}>
-        <Text style={styles(themeMode).title}>My Reviews</Text>
+      <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap: 30, width: '100%', paddingVertical: 10}}>
+            <IconButton iconName={'arrow-left'} onPress={()=> navigation.goBack()} />
+            <Text style={styles(themeMode).title}>My Reviews</Text>
+      </View>
 
         <View style={{gap: 10, flex: 1}}>            
             <FlatList
