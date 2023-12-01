@@ -8,13 +8,10 @@ import { UnLoggedMenu } from '../../components/Menus/unLoggedMenu'
 import { useNavigation } from '@react-navigation/native'
 export const RegisterScreen = () => {
 
-  const {themeMode}= useAppContext()
+  const {themeMode, handleRegister}= useAppContext()
 
   const navigation = useNavigation()
-
-  const handleRegister = () => {
-      navigation.navigate('LogIn')
-  }
+  
 
   return (
     <View style={styles(themeMode).container}>
