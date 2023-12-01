@@ -67,7 +67,6 @@ export const SellerScreen = ({ navigation, route }) => {
     <View style={styles(themeMode).container}>
       <Image source={restaurant.image} style={styles(themeMode).image} />
       <Text style={styles(themeMode).title}>{restaurant.restaurantName}</Text>
-
       <View style={{ height: 80, gap: 10, paddingHorizontal: 20 }}>
         <Text style={styles(themeMode).subTitle}>Categories</Text>
         <FlatList

@@ -5,17 +5,14 @@ import { IntroScreen } from '../screens/unLogged/IntroScreen';
 import { LogInScreen } from '../screens/unLogged/LogInScreen';
 import { RegisterScreen } from '../screens/unLogged/RegisterScreen';
 import { useAppContext } from '../hooks/useAppContext';
-import { HomeScreen } from '../screens/Store/HomeScreen';
 import { ForgotScreen } from '../screens/unLogged/ForgotScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CustomDrawerContent } from '../components/CustomDrawer';
 import { SettingsScreen } from '../screens/Store/SettingsScreen';
-import { HistorialScreen } from '../screens/Store/HistorialScreen';
-import { CarritoScreen } from '../screens/Store/CarritoScreen';
-import { KartContextProvider } from '../context/KartContext';
 import { HomeNavigation } from './HomeNavigation';
-import { ProfileScreen } from '../screens/Store/ProfileScreen';
 import { ProfileNavigation } from './ProfileNavigation';
+import { HistoryNavigation } from './HistoryNavigation';
+import { CartNavigation } from './CartNavigation';
 
 const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator();
@@ -47,8 +44,8 @@ export const NavigationHolder = () => {
                         headerStyle:{backgroundColor: themeMode.CONTRAST}, headerTintColor: themeMode.BACKGROUND}}>
                         <Drawer.Screen name='Home'          component={HomeNavigation}      options={{headerTitle:'Store'}}/>
                         <Drawer.Screen name='Settings'      component={SettingsScreen}/>
-                        <Drawer.Screen name='History'       component={HistorialScreen}/>
-                        <Drawer.Screen name='Cart'          component={CarritoScreen} />
+                        <Drawer.Screen name='History'       component={HistoryNavigation}/>
+                        <Drawer.Screen name='Cart'          component={CartNavigation} />
                         <Drawer.Screen name='Profile'       component={ProfileNavigation} />
                     </Drawer.Navigator>
                 </NavigationContainer>

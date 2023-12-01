@@ -57,7 +57,7 @@ export const CardModal = ({closeModal}) => {
         <View style={styles(themeMode).container}>
             <View style={{width: '100%', paddingHorizontal:20, paddingVertical:5}}>
                 <TouchableOpacity onPress={closeModal}>
-                    <Feather name="x" size={28} color={themeMode.SHADOWCONTRAST} />
+                    <Feather name="x" size={28} color={themeMode.GENERALTEXT} />
                 </TouchableOpacity>
             </View>
             <View style={styles(themeMode).inputContainer}>

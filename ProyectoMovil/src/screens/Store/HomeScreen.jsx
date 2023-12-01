@@ -101,13 +101,18 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles(themeMode).container}>
-      <View>
-        <SearchBar
-          placeholder={'Search for something tasty...'}
-          value={searching}
-          onChangeText={(value) => handleSearch(value)}
-        />
-      </View>
+        <View>
+          <SearchBar placeholder={'Search for something tasty...'} value={searching} onChangeText={(value) => handleSearch(value)}/>
+        </View>
+        
+        <View style={{height: 80, gap: 10, paddingHorizontal: 20}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
+            <Text style={styles(themeMode).tittle}>Categories</Text>
+            <CategoryButton categoryName={'Clear Filters'} onPress={() => handleClearFilters()} />
+          </View>
+            <FlatList horizontal data={filters} showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => {return(<CategoryButton categoryName={item.text} isSelected={item.isActive} onPress={() => {handlePressFilter({text:item.text})}} />)}}/>
+        </View>
 
       <View style={{ height: 80, gap: 10, paddingHorizontal: 20 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20 }}>
