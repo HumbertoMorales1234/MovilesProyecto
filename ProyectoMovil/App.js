@@ -12,6 +12,8 @@
 // npx expo install expo-image-picker
 //* ExpoSharing
 // npx expo install expo-sharing
+//*API
+// npm install axios
 
 import { AppContextProvider } from './src/context/AppContext';
 import { KartContextProvider } from './src/context/KartContext';

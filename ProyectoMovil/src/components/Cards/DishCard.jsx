@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Image, Modal, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useAppContext } from '../../hooks/useAppContext'
+
+import { Ramen } from '../../../assets'
 import { DishModal } from '../Modals/DishModal'
 
 export const DishCard = ({onPress, dish}) => {
@@ -15,8 +17,11 @@ export const DishCard = ({onPress, dish}) => {
     const hideModal = () =>{
         setModalVisibility(false)
     }
+    
 
   return (
+    // <TouchableOpacity style={styles(themeMode).container}>
+    //     <Image source={Ramen} style={styles(themeMode).image}/>
     <TouchableOpacity style={styles(themeMode).container} onPress={muestraModal}>
         <Image source={dish.image} style={styles(themeMode).image}/>
         <View style={{ width: 150, alignItems: 'center'}}>
