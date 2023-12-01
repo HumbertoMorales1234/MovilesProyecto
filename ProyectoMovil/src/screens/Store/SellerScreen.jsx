@@ -7,31 +7,46 @@ import { FlatList } from 'react-native-gesture-handler'
 import { DishCard } from '../../components/Cards/DishCard'
 import { LocationModal } from '../../components/Modals/LocationModal'
 
+// const Categories = [
+//   {id: 1, text: '🌿 Vegan', isActive: false},
+//   {id: 2, text: '🌶️ Spicy', isActive: false},
+//   {id: 3, text: '🇲🇽 Mexican', isActive: false},
+//   {id: 4, text: '🍨 Dessert', isActive: false},
+//   {id: 5, text: '🍝 Pasta', isActive: false},
+//   {id: 6, text: '🍕 Pizza', isActive: false},
+// ]
+
 const Categories = [
-  {id: 1, text: '🌿 Vegan', isActive: false},
-  {id: 2, text: '🌶️ Spicy', isActive: false},
-  {id: 3, text: '🇲🇽 Mexican', isActive: false},
-  {id: 4, text: '🍨 Dessert', isActive: false},
-  {id: 5, text: '🍝 Pasta', isActive: false},
-  {id: 6, text: '🍕 Pizza', isActive: false},
+  {id: 1, text: 'Vegan', isActive: false},
+  {id: 2, text: 'Categoria2', isActive: false},
+  {id: 3, text: '🌶️ Spicy', isActive: false},
 ]
 
-const dishes = [
-  {id: 1, description: 'Here should be a description of the product', price: '140.00', dishName:'Ramen de Verduras', image: Ramen, Categories: ['🌿 Vegan', '🌶️ Spicy']},
-  {id: 2, description: 'Here should be a description of the product', price: '170.00', dishName:'Ramen de Pollo', image: Ramen, Categories: ['🌶️ Spicy']},
-  {id: 3, description: 'Here should be a description of the product', price: '180.00', dishName:'Ramen de Res', image: Ramen, Categories: ['🌶️ Spicy']},
-  {id: 4, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
-]
+// const dishes = [
+//   {id: 1, description: 'Here should be a description of the product', price: '140.00', dishName:'Ramen de Verduras', image: Ramen, Categories: ['🌿 Vegan', '🌶️ Spicy']},
+//   {id: 2, description: 'Here should be a description of the product', price: '170.00', dishName:'Ramen de Pollo', image: Ramen, Categories: ['🌶️ Spicy']},
+//   {id: 3, description: 'Here should be a description of the product', price: '180.00', dishName:'Ramen de Res', image: Ramen, Categories: ['🌶️ Spicy']},
+//   {id: 4, description: 'Here should be a description of the product', price: '160.00', dishName:'Ramen de Champiñones', image: Ramen, Categories: ['🌿 Vegan']},
+// ]
 
-export const SellerScreen = ({ navigation, route }) => {
-  const { restaurant } = route.params;
-  const { themeMode } = useAppContext();
-  const [filteredDishes, setDishes] = useState(dishes);
-  const [filters, setFilters] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+export const SellerScreen = ({navigation, route}) => {
+  const {restaurant} = route.params
+  const {themeMode} = useAppContext()
+  const [filteredDishes, setFilteredDishes] = useState([])
+  const [dishes, setDishes] = useState([])
+  const [filters, setFilters] = useState([])
 
-  useEffect(() => {
-    setFilters([]);
+  useEffect( () => {
+    setFilters([])
+    const getDishes = () => {
+      if (restaurant && restaurant.Products) {
+        setDishes(restaurant.Products)
+        setFilteredDishes(restaurant.Products)
+        // console.log(restaurant.Products)
+      }
+    }
+    getDishes()
     const handleFilterSetting = () => {
       Categories.forEach((element) => {
         setFilters((prevFilters) => [...prevFilters, { text: element.text, isActive: false }]);
@@ -60,9 +75,9 @@ export const SellerScreen = ({ navigation, route }) => {
       const filtering = dishes.filter((dish) =>
         activeFilterTexts.every((filterText) => dish.Categories.includes(filterText))
       );
-      setDishes(filtering);
+      setFilteredDishes(filtering);
     } else {
-      setDishes(dishes);
+      setFilteredDishes(dishes);
     }
   };
 
