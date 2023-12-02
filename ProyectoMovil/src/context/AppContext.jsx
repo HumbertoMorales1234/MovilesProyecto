@@ -13,10 +13,7 @@ const initialState = {
     username: '',
     userpic: '', 
     userphone: 0,
-
     loggedIn: false,
-    
-    userCards: [],
     userLocation: '',
     token: ''
 }
@@ -41,19 +38,20 @@ function reducer(state, action){
 //*
         case CONTEXT_ACTIONS.LOG_IN:
             var uri
-            if(action.userpic){
-                uri = action.userpic
+            if(action.data.foto){
+                uri = action.data.foto
             }
             else{
                 uri = defaultPic
             }
-            // console.log("VALOR DE USER:"+action)
             return{
                 ...state,
-                username: action.user,
+                username: action.data.user,
+                userpic: action.data.foto, 
+                userphone: action.data.phone,
                 loggedIn: true,
-                userpic: uri,
-                token: action.user
+                userLocation: action.data.ubicacion,
+                token: action.data.token
             }
 //---------------------------------------------------------------
 //*
@@ -74,6 +72,7 @@ function reducer(state, action){
                 username: action.user,
                 userCards: action.userCards,
                 userphone: action.userphone,
+                token: action.token
             }            
 //----------------------------------------------------------------
 //*
@@ -96,14 +95,7 @@ function reducer(state, action){
                 username: username,
                 userphone: userphone,
             }            
-//----------------------------------------------------------------
-//*
-        case CONTEXT_ACTIONS.ADD_CARD:
-            return{
-                ...state,
-                userCards: [...state.userCards, action.card]
-            }            
-//----------------------------------------------------------------
+    
 //*
         case CONTEXT_ACTIONS.DELETE_CARD:
             const cleanedCards = state.userCards.filter(card => card !== action.card);
@@ -157,7 +149,7 @@ export const AppContextProvider = ({children}) =>{
                 if(saving){
                     const userData = (JSON.parse(saving))
                     dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, user: userData.username , userpic: userData.userpic, userCards: userData.userCards, 
-                        userLocation: userData.userLocation, userphone: userData.userphone, })
+                        userLocation: userData.userLocation, userphone: userData.userphone, toekn: userData.token, })
                 }
 
                 const currentTheme = await SecureStore.getItemAsync('themeMode')
@@ -173,10 +165,12 @@ export const AppContextProvider = ({children}) =>{
     }, [])
 
     const handleLogIn = async (username, password) =>{
-        //Agregar el acceso a la BD
-        // if(username==='Beto' && password==='Prueba12'){
-        //     dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: username})
-        // }
+      let token 
+      let foto
+      let user
+      let phone
+      let ubicacion
+
         try {
             const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView', {
               username: username,
@@ -184,14 +178,48 @@ export const AppContextProvider = ({children}) =>{
             })
 
             if (response.status === 200) {
-              // console.log(response.data.access)
-              dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
+              token = response.data.access
+              console.log("LOGIN1: "+JSON.stringify(response.data))
             } else {
               console.log('Wrong Credentials')
             }
           } catch (error) {
             console.log('Error '+String(error))
+            return
           }
+
+          try {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView2', {
+            }, {
+              headers:{
+              "Authorization": 'Bearer '+ token
+            }})
+
+            if (response.status === 200) {
+              console.log("LOGIN2: "+JSON.stringify(response.data))
+
+              foto = response.data.foto
+              user = response.data.id_user.username
+              phone = response.data.telefono
+              ubicacion = response.data.ubicacion_entrega
+            } else {
+              console.log('Wrong Credentials')
+            }
+          } catch (error) {
+            console.log('Error '+String(error))
+            return
+          }
+
+          datos ={
+            token: token,
+            foto: foto,
+            user: user,
+            phone: phone,
+            ubicacion: ubicacion
+          }
+
+          dispatch({type: CONTEXT_ACTIONS.LOG_IN, data: datos})
+
     }
 
     const handleRegister = async (username, password, navigation) =>{
@@ -216,8 +244,44 @@ export const AppContextProvider = ({children}) =>{
         await SecureStore.setItemAsync('userData', JSON.stringify(state))
     }
 
-    const handleUpdateUser = (userpic, username, userphone) =>{
+    const handleUpdateUser = async (userpic, username, userphone) =>{
+      try {
+        console.log(state.token)
+        const response = await axios.post('http://10.0.2.2:8000/apiMovil/UpdateView', {
+          foto: userpic,
+          username: username,
+          telefono: userphone
+        }, {
+          headers:{
+          "Authorization": 'Bearer '+ state.token
+        }})
+          if (response.status === 200) {
+          } else {
+          }
+        } catch (error) {
+          console.log('Error '+String(error))
+        }
+
         dispatch({type: CONTEXT_ACTIONS.UPDATE_USER, userpic: userpic, username:username, userphone:userphone})
+    }
+
+
+    const handleChangePassword = async (newPass, oldPass) =>{
+      try {
+        console.log("TOKEN: "+state.token)
+        const response = await axios.post('http://10.0.2.2:8000/apiMovil/changePasswordView', {
+          oldPass: oldPass,
+          newPass: newPass,
+        }, {
+          headers:{
+          "Authorization": 'Bearer '+ state.token
+        }})
+          if (response.status === 200) {
+          } else {
+          }
+        } catch (error) {
+          console.log('Error '+String(error))
+        }
     }
 
     const handleLogOut = async () =>{
@@ -347,6 +411,7 @@ export const AppContextProvider = ({children}) =>{
           price: platillo.precio,
           dishName: platillo.nombre,
           image: Xmas,
+          existance: platillo.existencia,
           Categories: categories,
         }
       })
@@ -360,6 +425,7 @@ export const AppContextProvider = ({children}) =>{
           })
             if (response.status === 200) {
               transformedData = transformDishes(response.data)
+              console.log("DISHES: "+JSON.stringify(response.data))
               return transformedData
             } else {
             }
@@ -423,6 +489,121 @@ export const AppContextProvider = ({children}) =>{
         }
   }
 
+  const transformMyOrders = (apiData) => {
+    return apiData.map(pedido => {
+      const products = pedido.productos.map((prod) => ({
+        id: prod.id,
+        description: prod.descripcion,
+        price: prod.precio,
+        dishName: prod.nombre,
+        imagen: Xmas,
+        location: pedido.ubicacion,
+      }))
+      return {
+        id: pedido.id,
+        estado: pedido.estado,
+        precioTotal: pedido.precio_total,
+        fecha: pedido.fecha,
+        ubicacionEntrega: pedido.ubicacion_entrega,
+        mPago: (pedido.pago === 1 ? 'Efectivo' : 'Tarjeta'),
+        productos: products
+      }
+    })
+  }
+
+  const getMyOrder= async () =>{
+    try {
+      console.log(state.token)
+      const response = await axios.post('http://10.0.2.2:8000/apiMovil/myPedidosView', {
+      }, {
+        headers:{
+        "Authorization": 'Bearer '+ state.token
+      }})
+        if (response.status === 200) {
+          transformedData = transformMyOrders(response.data)
+          return transformedData
+        } else {
+        }
+      } catch (error) {
+        console.log('Error '+String(error))
+      }
+}
+
+
+const handleCrearReview = async (texto, calificacion, id_producto ) =>{
+  try {
+      const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaReseñaView', {
+        tipo_reseña: 1,
+        texto: texto,
+        calificacion: calificacion,
+        id_producto: id_producto,
+
+      }
+      , {
+        headers:{
+        "Authorization": 'Bearer '+ state.token
+      }})
+      if (response.status === 200) {
+      } else {
+        console.log('Wrong Credentials')
+      }
+    } catch (error) {
+      console.log('Error '+String(error))
+    }
+}
+
+const handleCrearTarjeta = async (card) =>{
+  try {
+      const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaTarjetaView', {
+        holder: card.holder,
+        number: card.number,
+        sCode: card.sCode,
+        expirationDate: card.expDate,
+
+      }
+      , {
+        headers:{
+        "Authorization": 'Bearer '+ state.token
+      }})
+      if (response.status === 200) {
+      } else {
+        console.log('Wrong Credentials')
+      }
+    } catch (error) {
+      console.log('Error '+String(error))
+    }
+}
+
+
+const transformMyCards = (apiData) => {
+  return apiData.map(tarjeta => {
+    return {
+      holder: tarjeta.holder,
+      number: tarjeta.number,
+      sCode: tarjeta.sCode,
+      expDate: tarjeta.expirationDate
+    }
+  })
+}
+
+const getMyCards= async () =>{
+  try {
+    console.log(state.token)
+    const response = await axios.post('http://10.0.2.2:8000/apiMovil/myTarjetasView', {
+    }, {
+      headers:{
+      "Authorization": 'Bearer '+ state.token
+    }})
+      if (response.status === 200) {
+        transformedData = transformMyCards(response.data)
+        return transformedData
+      } else {
+      }
+    } catch (error) {
+      console.log('Error '+String(error))
+    }
+}
+
     const transformCategories = (apiData) => {
       return apiData.map(categoria => {
         return {
@@ -458,7 +639,6 @@ export const AppContextProvider = ({children}) =>{
         handleUpdateUser,
 
         handleDeleteCard,
-        handleAddCard,
 
         handleUpdateLocation,
 
@@ -471,12 +651,17 @@ export const AppContextProvider = ({children}) =>{
         handleEmptyKart,
     
         handleRegister,
+        handleCrearReview,
+        handleCrearTarjeta,
+        handleChangePassword,
 
         getRestaurants,
         getDishes,
         getReviews,
         getCategories,
-        getMyReviews
+        getMyReviews,
+        getMyOrder,
+        getMyCards
     }
 
      return(

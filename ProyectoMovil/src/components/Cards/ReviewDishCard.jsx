@@ -42,7 +42,7 @@ export const ReviewDishCard = ({onPress, dish, estado, errorDelivery}) => {
                 visible={modalVisible}
                 transparent={true}
                 onRequestClose={() => {
-                    setModalVisibility(!modalVisible);
+                    setModalVisibility(!modalVisible)
                 }}
                 >
                 <View style={styles(themeMode).Modal}>

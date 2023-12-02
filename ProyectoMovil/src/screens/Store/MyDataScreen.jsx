@@ -51,8 +51,9 @@ export const MyDataScreen = () => {
 
 
   const formatPhone = (value) => {
+    const cast = ''+value
     // Eliminar espacios en blanco y caracteres no numéricos
-    const cleanValue = value.replace(/\D/g, '');
+    const cleanValue = cast.replace(/\D/g, '');
     // Dividir en secciones de 3 - 3 - 4 caracteres
     const formattedValue = cleanValue.match(/.{1,3}/g);
     //const formattedValue = cleanValue.match(/(\d{3})(\d{3})(\d{4})$/);

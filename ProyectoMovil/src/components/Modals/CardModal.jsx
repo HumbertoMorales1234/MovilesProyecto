@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
-import { Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'
 import { ConfirmationButton } from '../Buttons/ConfirmationButton'
 import { TouchableOpacity } from 'react-native'
 
 export const CardModal = ({closeModal}) => {
     let card = {number: 0, holder: '', expDate: 0, sCode: 0}
 
-    const {themeMode,handleAddCard} = useAppContext()
+    const {themeMode, handleCrearTarjeta} = useAppContext()
 
     const [cardNumber, setCardNumber] = useState(0)
     const [cardHolder, setCardHolder] = useState('')
@@ -18,24 +18,37 @@ export const CardModal = ({closeModal}) => {
 
     const formatCardNumber = (value) => {
         // Eliminar espacios en blanco y caracteres no numéricos
-        const cleanValue = value.replace(/\D/g, '');
+        const cleanValue = value.replace(/\D/g, '')
         // Dividir en secciones de 4 caracteres
-        const formattedValue = cleanValue.match(/.{1,4}/g);
+        const formattedValue = cleanValue.match(/.{1,4}/g)
         // Unir las secciones con espacios
-        const joinedValue = formattedValue ? formattedValue.join(' ') : '';
-        setCardNumber(joinedValue);
-      };
+        const joinedValue = formattedValue ? formattedValue.join(' ') : ''
+        setCardNumber(joinedValue)
+      }
     
       const formatExpireDate = (value) => {
-        const cleanValue = value.replace(/\D/g, '');
-        const formattedValue = cleanValue.match(/.{1,2}/g);
-        const joinedValue = formattedValue ? formattedValue.join('/') : '';
-        setCardExp(joinedValue);
-      };
+        const cleanValue = value.replace(/\D/g, '')
+        const formattedValue = cleanValue.match(/.{1,2}/g)
+        const joinedValue = formattedValue ? formattedValue.join('/') : ''
+        setCardExp(joinedValue)
+      }
 
       const handleSavePressed = (closeModal) =>{
-        if(cardHolder === '' || cardNumber.length != 19 || cardExp.length !=5 || cardSCode.length !=3){
-            setError('Incomplete or Invalid Data')
+        if(cardHolder === ''){
+            setError('Incomplete or Invalid cardHolder')
+            return
+        }
+        if(cardNumber.length != 19){
+
+            setError('Incomplete or Invalid cardNumber: '+cardNumber.length+cardNumber+cardNumber.length)
+            return
+        }
+        if(cardExp.length !=5){
+            setError('Incomplete or Invalid cardExp')
+            return
+        }
+        if(cardSCode.length !=3){
+            setError('Incomplete or Invalid cardSCode')
             return
         }
         card.expDate= cardExp.toString().replace('/', '')
@@ -49,7 +62,7 @@ export const CardModal = ({closeModal}) => {
         card.sCode = cardSCode
 
         console.log(card)
-        handleAddCard(card)
+        handleCrearTarjeta(card)
         closeModal()
       }
     
