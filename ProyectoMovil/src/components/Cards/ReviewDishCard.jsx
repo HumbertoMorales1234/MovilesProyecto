@@ -32,11 +32,11 @@ export const ReviewDishCard = ({onPress, dish, estado, errorDelivery}) => {
 
   return (
     <TouchableOpacity style={styles(themeMode).container} onPress={muestraModal}>
-        <Image source={dish.image} style={styles(themeMode).image}/>
+        <Image source={dish.imagen} style={styles(themeMode).image}/>
         <View style={{ width: 150, alignItems: 'center'}}>
-            <Text style={styles(themeMode).title}>{dish.dishName}</Text>
+            <Text style={styles(themeMode).title}>{dish.nombre}</Text>
         </View>
-        <Text style={styles(themeMode).priceText}>{dish.price} $</Text>
+        <Text style={styles(themeMode).priceText}>{dish.precio} $</Text>
         <Modal
                 animationType="slide"
                 visible={modalVisible}

@@ -18,7 +18,6 @@ export const HistorialScreen = () => {
           const ordersData = await getMyOrder()
 
           setPedidos(ordersData)
-
           const entreg = ordersData.filter((pedido) => pedido.estado === 'Entregado')
           const pendie = ordersData.filter((pedido) => pedido.estado !== 'Entregado')
 

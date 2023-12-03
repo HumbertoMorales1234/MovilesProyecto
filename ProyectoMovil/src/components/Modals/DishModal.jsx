@@ -18,6 +18,7 @@ export const DishModal = ({dish, hideModal}) => {
 
   const {themeMode, getReviews, handleAddToKart,} = useAppContext()
   const [counter, setCounter] = useState(1)
+  const [maxCounter, setMaxCounter] = useState(1)
   const [review, setReview] = useState([])
   
   useEffect( () => {
@@ -25,6 +26,8 @@ export const DishModal = ({dish, hideModal}) => {
       try {
         const apiData = await getReviews(dish.id)
         setReview(apiData)
+        console.log(JSON.stringify(dish))
+        setMaxCounter(dish.existance)
       } catch (error) {
         console.log('Error fetching restaurants:', error)
       }
@@ -50,7 +53,7 @@ export const DishModal = ({dish, hideModal}) => {
   }
   
   const increaseCounter = () =>{
-    if(counter<dish.existance){
+    if(counter<maxCounter){
       setCounter(counter+1)
     }
   }

@@ -34,7 +34,7 @@ export const ReviewModal = ({dish, hideModal, calificado}) => {
             <TouchableOpacity onPress={hideModal}>
                 <Feather name="x" size={28} color={themeMode.GENERALTEXT} />
             </TouchableOpacity>
-            <Text style={styles(themeMode).title}>{dish.dishName}</Text>
+            <Text style={styles(themeMode).title}>{dish.nombre}</Text>
         </View>
         <View style={styles(themeMode).inputContainer}>
             <Text style={styles(themeMode).label}>Rate the Plate</Text>

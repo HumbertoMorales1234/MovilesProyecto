@@ -8,7 +8,8 @@ import { IconButton } from '../../components/Buttons/IconButton'
 
 export const PaymentScreen = ({navigation, route}) => {
     const {total} = route.params
-    const {themeMode} = useAppContext()
+    const {products} = route.params
+    const {themeMode, handleCrearPedido, setKartProducts} = useAppContext()
     const [paymentMethod, setPaymentMethod] = useState('')
     const [selectedCard, setSelectedCard] = useState()
     const [modalVisible, setModalVisibility] = useState(false)
@@ -17,6 +18,7 @@ export const PaymentScreen = ({navigation, route}) => {
 
     const handlePaymentSelection = (type) =>{
       setPaymentMethod(type)
+      setSelectedCard('')
     }
 
     const handleCardSelection = (type) =>{
@@ -32,10 +34,18 @@ export const PaymentScreen = ({navigation, route}) => {
       }else{
         setError('')
         setSelectedCard(card)
+        console.log(JSON.stringify(selectedCard))
       }
     }
 
     const handlePayment = ()=>{
+      console.log("HANDLE PAYMENT")
+      console.log(paymentMethod)
+      console.log(selectedCard)
+      console.log(products)
+      handleCrearPedido(products, selectedCard, total)
+      navigation.goBack()
+      setKartProducts([])
 
     }
 

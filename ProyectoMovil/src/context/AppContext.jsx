@@ -149,7 +149,7 @@ export const AppContextProvider = ({children}) =>{
                 if(saving){
                     const userData = (JSON.parse(saving))
                     dispatch({type: CONTEXT_ACTIONS.RECOVER_USER, user: userData.username , userpic: userData.userpic, userCards: userData.userCards, 
-                        userLocation: userData.userLocation, userphone: userData.userphone, toekn: userData.token, })
+                        userLocation: userData.userLocation, userphone: userData.userphone, token: userData.token, })
                 }
 
                 const currentTheme = await SecureStore.getItemAsync('themeMode')
@@ -179,7 +179,7 @@ export const AppContextProvider = ({children}) =>{
 
             if (response.status === 200) {
               token = response.data.access
-              console.log("LOGIN1: "+JSON.stringify(response.data))
+              // console.log("LOGIN1: "+JSON.stringify(response.data))
             } else {
               console.log('Wrong Credentials')
             }
@@ -196,7 +196,7 @@ export const AppContextProvider = ({children}) =>{
             }})
 
             if (response.status === 200) {
-              console.log("LOGIN2: "+JSON.stringify(response.data))
+              // console.log("LOGIN2: "+JSON.stringify(response.data))
 
               foto = response.data.foto
               user = response.data.id_user.username
@@ -222,16 +222,15 @@ export const AppContextProvider = ({children}) =>{
 
     }
 
-    const handleRegister = async (username, password, navigation) =>{
+    const handleRegister = async (username, password, mail) =>{
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/loginView', {
+            const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaUsuarioView', {
               username: username,
               password: password,
+              mail: mail
             })
 
             if (response.status === 200) {
-              // console.log(response.data.access)
-              dispatch({type: CONTEXT_ACTIONS.LOG_IN, user: response.data.access})
             } else {
               console.log('Wrong Credentials')
             }
@@ -246,7 +245,7 @@ export const AppContextProvider = ({children}) =>{
 
     const handleUpdateUser = async (userpic, username, userphone) =>{
       try {
-        console.log(state.token)
+        // console.log(state.token)
         const response = await axios.post('http://10.0.2.2:8000/apiMovil/UpdateView', {
           foto: userpic,
           username: username,
@@ -268,7 +267,7 @@ export const AppContextProvider = ({children}) =>{
 
     const handleChangePassword = async (newPass, oldPass) =>{
       try {
-        console.log("TOKEN: "+state.token)
+        // console.log("TOKEN: "+state.token)
         const response = await axios.post('http://10.0.2.2:8000/apiMovil/changePasswordView', {
           oldPass: oldPass,
           newPass: newPass,
@@ -311,10 +310,10 @@ export const AppContextProvider = ({children}) =>{
             return product
           })
           setKartProducts(mappedKart)
-          console.log(kartProducts)
+          // console.log(kartProducts)
         }else{
         setKartProducts(prevProducts => [...prevProducts, { dish: dish, cantidad: cantidad }]);
-        console.log(kartProducts)
+        // console.log(kartProducts)
       }
     }
 
@@ -375,6 +374,7 @@ export const AppContextProvider = ({children}) =>{
           dishName: prod.nombre,
           imagen: Xmas,
           location: negocio.ubicacion,
+          existance: prod.existencia,
           Categories: prod.categoria.map((cat) => cat.nombre),
         }))
         return {
@@ -425,7 +425,7 @@ export const AppContextProvider = ({children}) =>{
           })
             if (response.status === 200) {
               transformedData = transformDishes(response.data)
-              console.log("DISHES: "+JSON.stringify(response.data))
+              // console.log("DISHES: "+JSON.stringify(response.data))
               return transformedData
             } else {
             }
@@ -473,7 +473,7 @@ export const AppContextProvider = ({children}) =>{
 
     const getMyReviews= async () =>{
       try {
-        console.log(state.token)
+        // console.log(state.token)
         const response = await axios.post('http://10.0.2.2:8000/apiMovil/myReseñaProductoView', {
         }, {
           headers:{
@@ -493,11 +493,8 @@ export const AppContextProvider = ({children}) =>{
     return apiData.map(pedido => {
       const products = pedido.productos.map((prod) => ({
         id: prod.id,
-        description: prod.descripcion,
-        price: prod.precio,
-        dishName: prod.nombre,
-        imagen: Xmas,
-        location: pedido.ubicacion,
+        producto: prod.producto,
+        cantidad: prod.cantidad,
       }))
       return {
         id: pedido.id,
@@ -506,14 +503,13 @@ export const AppContextProvider = ({children}) =>{
         fecha: pedido.fecha,
         ubicacionEntrega: pedido.ubicacion_entrega,
         mPago: (pedido.pago === 1 ? 'Efectivo' : 'Tarjeta'),
-        productos: products
+        productosPedidos: products
       }
     })
   }
 
   const getMyOrder= async () =>{
     try {
-      console.log(state.token)
       const response = await axios.post('http://10.0.2.2:8000/apiMovil/myPedidosView', {
       }, {
         headers:{
@@ -521,6 +517,7 @@ export const AppContextProvider = ({children}) =>{
       }})
         if (response.status === 200) {
           transformedData = transformMyOrders(response.data)
+          // console.log(JSON.stringify(transformedData))
           return transformedData
         } else {
         }
@@ -586,9 +583,40 @@ const transformMyCards = (apiData) => {
   })
 }
 
+const handleCrearPedido = async (productos, tarjeta, total) =>{
+  let numero 
+  if( tarjeta){
+    // console.log(tarjeta)
+    numero = tarjeta.number
+  }
+  else{
+    // console.log("SIN TARJETAs"+ tarjeta)
+    numero = 0
+  }
+
+  try {
+    const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaPedidoView', {
+      tarjeta: numero,
+      productos: productos,
+      total: total,
+    }
+    , {
+      headers:{
+      "Authorization": 'Bearer '+ state.token
+    }})
+    if (response.status === 200) {
+    } else {
+      console.log('Wrong Credentials')
+    }
+  } catch (error) {
+    console.log('Error '+String(error))
+  }
+
+}
+
 const getMyCards= async () =>{
   try {
-    console.log(state.token)
+    // console.log(state.token)
     const response = await axios.post('http://10.0.2.2:8000/apiMovil/myTarjetasView', {
     }, {
       headers:{
@@ -644,6 +672,7 @@ const getMyCards= async () =>{
 
         handleThemeChange,
         kartProducts, 
+        setKartProducts,
         handleAddToKart, 
         handleDeleteFromKart,
         handleReduceCuantity,
@@ -654,6 +683,7 @@ const getMyCards= async () =>{
         handleCrearReview,
         handleCrearTarjeta,
         handleChangePassword,
+        handleCrearPedido,
 
         getRestaurants,
         getDishes,
