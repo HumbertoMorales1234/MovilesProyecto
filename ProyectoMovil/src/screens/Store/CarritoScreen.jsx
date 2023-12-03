@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 
 export const CarritoScreen = () => {
 
-  const {kartProducts, themeMode, handleEmptyKart,} = useAppContext();
+  const {kartProducts, themeMode, handleEmptyKart, state} = useAppContext();
   const navigation = useNavigation()
   const [total, setTotal] = useState(0);
   const [error, setError] = useState('')
@@ -29,6 +29,10 @@ export const CarritoScreen = () => {
   }, [kartProducts]);
 
   const handleProceedToPayment = () =>{
+    if(!state.userLocation){
+      setError('No se ha definido una ubicación')
+      return
+    }
       if(kartProducts.length === 0){
         setError('No hay productos en el carrito')
         return

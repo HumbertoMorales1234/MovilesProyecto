@@ -8,7 +8,7 @@ import { ConfirmationButton } from '../Buttons/ConfirmationButton';
 
 
 export const ReviewModal = ({dish, hideModal, calificado}) => {
-    const {themeMode} = useAppContext()
+    const {themeMode, handleCrearReview} = useAppContext()
     const [reviewText, setReviewText] = useState('')
     const [rating, setRating] = useState(0)
     const [error, setError] = useState('')
@@ -22,6 +22,7 @@ export const ReviewModal = ({dish, hideModal, calificado}) => {
             setError('The Review is Incomplete')
             return
         }
+        handleCrearReview(reviewText, rating, dish.id)
         setError('')
         calificado()
         hideModal()
@@ -33,7 +34,7 @@ export const ReviewModal = ({dish, hideModal, calificado}) => {
             <TouchableOpacity onPress={hideModal}>
                 <Feather name="x" size={28} color={themeMode.GENERALTEXT} />
             </TouchableOpacity>
-            <Text style={styles(themeMode).title}>{dish.dishName}</Text>
+            <Text style={styles(themeMode).title}>{dish.nombre}</Text>
         </View>
         <View style={styles(themeMode).inputContainer}>
             <Text style={styles(themeMode).label}>Rate the Plate</Text>

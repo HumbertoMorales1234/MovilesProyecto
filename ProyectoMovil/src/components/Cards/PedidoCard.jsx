@@ -14,7 +14,7 @@ export const PedidoCard = ({pedido}) => {
     const navigation = useNavigation()
 
     useEffect(() => {
-        setProductos(pedido.productos.map(prod => prod.dishName).join(', '));
+        setProductos(pedido.productosPedidos.map(prod => prod.producto.nombre).join(', '));
       }, []);
 
     

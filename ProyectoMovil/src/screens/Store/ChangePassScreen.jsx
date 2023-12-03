@@ -7,9 +7,10 @@ import { RegisterInput } from '../../components/Inputs/RegisterInput'
 import { ConfirmationButton } from '../../components/Buttons/ConfirmationButton'
 
 export const ChangePassScreen = () => {
-  const {themeMode} = useAppContext()
+  const {themeMode, handleChangePassword} = useAppContext()
   const navigation = useNavigation()
   const [pass, setPass] = useState('')
+  const [oldPass, setOldPass] = useState('')
   const [confPass, setConfPass] = useState('')
   const [error, setError] = useState('')
 
@@ -19,7 +20,8 @@ export const ChangePassScreen = () => {
     }else if( pass !== confPass){
       setError('Las Contraseñas no son iguales')
     }else{
-      setError('')
+      handleChangePassword(pass, oldPass)
+      navigation.goBack()
     }
   }
 
@@ -30,6 +32,7 @@ export const ChangePassScreen = () => {
             <Text style={styles(themeMode).title} >Change Password</Text>
         </View>
         <View style={{gap: 30}}>
+        <RegisterInput label={'Password'}     inputValue={oldPass}     secure onChangeText={(value) => setOldPass(value)}/>
           <RegisterInput label={'New Password'}     inputValue={pass}     secure onChangeText={(value) => setPass(value)}/>
           <RegisterInput label={'Confirm Password'} inputValue={confPass} secure onChangeText={(value) => setConfPass(value)}/>
         </View>
@@ -44,8 +47,7 @@ const styles = (theme) => StyleSheet.create({
     backgroundColor: theme.BACKGROUND,
     flex: 1,
     alignItems: 'center',
-    paddingTop: 20,
-    gap: 60
+    gap: 40
   },
   title:{
       color: theme.GENERALTEXT,

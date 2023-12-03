@@ -9,10 +9,19 @@ export const CardCard = ({card}) => {
     const {themeMode, handleDeleteCard} = useAppContext()
     const [cardExp, setCardExp] = useState(0)
 
-    useEffect(() => {formatExpireDate()},[])
+    useEffect(() => {
+        if(card.expDate){
+            formatExpireDate()
+        }
+    },[])
 
     const formatExpireDate = () => {
-        const value = card.expDate
+        var value
+        if(card.expDate<1000){
+            value = '0'+ card.expDate
+        }else{
+            value = ''+ card.expDate
+        }
         const cleanValue = value.replace(/\D/g, '');
         const formattedValue = cleanValue.match(/.{1,2}/g);
         const joinedValue = formattedValue ? formattedValue.join('/') : '';

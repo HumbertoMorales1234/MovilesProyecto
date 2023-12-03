@@ -44,10 +44,10 @@ export const OrderScreen = ({navigation, route}) => {
         <View style={{flex: 1, paddingTop: 10}}>
             <Text style={styles(themeMode).date} >Productos Ordenados</Text>
             <FlatList
-                data ={pedido.productos}
+                data ={pedido.productosPedidos}
                 renderItem={({item}) => {
                     return(
-                        <ReviewDishCard dish={item} estado={pedido.estado} errorDelivery={(message) => handleSetError(message)}/>
+                        <ReviewDishCard dish={item.producto} estado={pedido.estado} errorDelivery={(message) => handleSetError(message)}/>
                     )
                 }}
                 />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FlatList, Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { useAppContext } from '../../hooks/useAppContext'
 import { IconTextButton } from '../Buttons/IconTextButton'
@@ -12,10 +12,27 @@ import { ConfirmationButton } from '../Buttons/ConfirmationButton';
 
 export const CardSelectModal = ({ hideModal}) => {
 
-  const {themeMode, state,} = useAppContext()
+  const {themeMode, getMyCards} = useAppContext()
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cardsData = await getMyCards();
+        //setCards((prevCards) => [...prevCards, card]);
+        setCards(cardsData)
+        console.log("TARJETAS AWOOOOOOOO2s:", cardsData);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
 
   const contenido = () =>{
-    if(state.userCards.length == 0){
+    if(!cards){
       return(
         <View style={{ alignItems: 'center', height: 800, gap: 40}}>
             <Text style={styles(themeMode).subTitle}>Parece que no tienes tarjetas añadidas :(</Text>
@@ -29,7 +46,7 @@ export const CardSelectModal = ({ hideModal}) => {
             <Text style={styles(themeMode).subTitle}>Select a Card</Text>
             <View style={{flex: 1}}>
               <FlatList
-                data={state.userCards}
+                data={cards}
                 renderItem={({item}) => {
                   return(
                       <SelectCard card={item} onPress={(value) => hideModal(value)}/>
