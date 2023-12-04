@@ -18,11 +18,15 @@ export const RegisterScreen = () => {
   const navigation = useNavigation()
 
   const handlePressed = () =>{
+    const comprobar = /^(?=(.*[A-Z]){2})(?=(.*[a-z]){2})(?=(.*\d){3})(?=(.*[\W_]){2})[A-Za-z\d\W_]{10,}$/.test(pass)
     if(pass === '' || confPass === ''){
       setError('Hay datos faltantes')
     }else if( pass !== confPass){
       setError('Las Contraseñas no son iguales')
-    }else{
+    }else if(!comprobar){
+      setError('La contraseña no cumple con los requisitos')
+    }
+    else{
       handleRegister(user, pass, mail)
       navigation.goBack()
     }

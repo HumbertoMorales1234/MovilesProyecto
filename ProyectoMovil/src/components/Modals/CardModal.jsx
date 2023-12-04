@@ -61,7 +61,7 @@ export const CardModal = ({closeModal}) => {
         card.holder= cardHolder
         card.sCode = cardSCode
 
-        console.log(card)
+        console.log("TARJETA"+card)
         handleCrearTarjeta(card)
         closeModal()
       }
