@@ -384,6 +384,7 @@ export const AppContextProvider = ({children}) =>{
           image: negocio.id_usuario.foto,
           Categories: categories,
           Products: products,
+          location: negocio.ubicacion,
         }
       })
     }

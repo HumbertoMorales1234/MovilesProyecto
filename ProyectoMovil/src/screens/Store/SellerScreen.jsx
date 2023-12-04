@@ -111,7 +111,7 @@ export const SellerScreen = ({ navigation, route }) => {
         <LocationModal
           hideModal={() => setModalVisible(false)}
           coordinates={null}
-          address={restaurant}
+          address={restaurant.location}
         />
       )}
     </View>
