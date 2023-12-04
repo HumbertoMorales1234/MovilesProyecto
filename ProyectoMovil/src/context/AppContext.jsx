@@ -327,6 +327,9 @@ export const AppContextProvider = ({children}) =>{
     const handleDeleteFromKart = (dishName) =>{
         const filteredArray = kartProducts.filter(product=> product.dish.dishName !== dishName)
         setKartProducts(filteredArray)
+        if(filteredArray.length== 0){
+          setCartSeller('')
+        }
     }
 
     const handleReduceCuantity = (dishName) =>{
@@ -356,6 +359,7 @@ export const AppContextProvider = ({children}) =>{
     }
 
     const handleEmptyKart = () =>{
+        setCartSeller('')
         setKartProducts([])
     }
     
@@ -617,6 +621,7 @@ const handleCrearPedido = async (productos, tarjeta, total) =>{
     } else {
       console.log('Wrong Credentials')
     }
+    setCartSeller('')
   } catch (error) {
     console.log('Error '+String(error))
   }
