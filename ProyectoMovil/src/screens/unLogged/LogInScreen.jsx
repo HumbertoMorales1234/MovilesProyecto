@@ -33,7 +33,7 @@ export const LogInScreen = () => {
         <Text style={styles(themeMode).title}>Log In</Text>
         
         <View style={{gap: 20}}>
-          <RegisterInput iconName={'mail'} label={'eMail'} onChangeText={(value) => setUsername(value)} inputValue={username}/>
+          <RegisterInput iconName={'user'} label={'User'} onChangeText={(value) => setUsername(value)} inputValue={username}/>
 
           <View style={{alignItems: 'flex-end', gap:10}}>
             <RegisterInput iconName={'lock'} label={'Password'} secure onChangeText={(value) => setPassword(value)} inputValue={password}/>

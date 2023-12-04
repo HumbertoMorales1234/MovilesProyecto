@@ -14,12 +14,13 @@ import { TouchableOpacity } from 'react-native';
 //   {id: 4, text: 'Not bad', stars: 4},
 // ]
 
-export const DishModal = ({dish, hideModal}) => {
+export const DishModal = ({dish, hideModal, seller}) => {
 
-  const {themeMode, getReviews, handleAddToKart,} = useAppContext()
+  const {themeMode, getReviews, handleAddToKart, cartSeller, handleUpdateSeller} = useAppContext()
   const [counter, setCounter] = useState(1)
   const [maxCounter, setMaxCounter] = useState(1)
   const [review, setReview] = useState([])
+  const [error, setError] = useState('')
   
   useEffect( () => {
     const fetchReviews = async () => {
@@ -59,14 +60,20 @@ export const DishModal = ({dish, hideModal}) => {
   }
 
   const handleAdd = (hideModal) =>{
-    handleAddToKart(dish, counter)
-    console.log('added')
-    hideModal()
+    if(cartSeller == '' || cartSeller === seller){
+      handleUpdateSeller(seller)
+      handleAddToKart(dish, counter)
+      console.log('added')
+      hideModal()
+    }
+    else{
+      setError('No puedes comprar de distintos provedores en un solo pedido')
+    }
   }
 
   return (
     <View style={styles(themeMode).container}>
-        <ImageBackground source={dish.image} style={styles(themeMode).image} imageStyle={{borderTopLeftRadius: 20, borderTopRightRadius: 20}}>
+        <ImageBackground source={{uri: dish.image}} style={styles(themeMode).image} imageStyle={{borderTopLeftRadius: 20, borderTopRightRadius: 20}}>
           <TouchableOpacity onPress={hideModal}>
            <Feather name="x" size={28} color={themeMode.SHADOWCONTRAST} />
           </TouchableOpacity>
@@ -92,6 +99,7 @@ export const DishModal = ({dish, hideModal}) => {
           <View>
             <Text style={styles(themeMode).subTitle}>Total: {(counter*dish.price).toFixed(2)} $</Text>
           </View>
+          <Text style={{color: themeMode.ALERT}}>{error}</Text>
           <IconTextButton text={'Add to the cart'} iconName={'shopping-cart'} onPress={() => handleAdd(hideModal)}/>
         </View>
 

@@ -8,6 +8,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { IconTextButton } from '../../components/Buttons/IconTextButton';
 import { useNavigation } from '@react-navigation/native';
 import { THEME } from '../../theme/Colors';
+import NoPhoto from '../../../assets/no_photo.jpg';
+
+
 
 
 export const ProfileScreen = () => {
@@ -30,7 +33,7 @@ export const ProfileScreen = () => {
     <View style={styles(themeMode).container}>
         <View style={{alignItems: 'center'}}>
             <View style={styles(themeMode).imageContainer}>
-                <Image source={{uri: state.userpic}} style={styles(themeMode).image}/>
+                <Image source={state.userpic===''?NoPhoto:{uri: state.userpic}} style={styles(themeMode).image}/>
             </View>
             <Text style={styles(themeMode).nameText}>{state.username}</Text>
         </View>

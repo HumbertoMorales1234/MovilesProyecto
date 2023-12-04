@@ -87,7 +87,7 @@ export const SellerScreen = ({ navigation, route }) => {
             <CategoryButton
               categoryName={item.text}
               isSelected={item.isActive}
-              onPress={() => handlePressFilter({ text: item.text })}
+              onPress={() => handlePressFilter({ text: item.text }) }
             />
           )}
         />
@@ -98,7 +98,7 @@ export const SellerScreen = ({ navigation, route }) => {
         <Text style={styles(themeMode).subTitle}>Available Products</Text>
         <FlatList
           data={filteredDishes}
-          renderItem={({ item }) => <DishCard dish={item} />}
+          renderItem={({ item }) => <DishCard dish={item} seller={restaurant.id}/>}
         />
       </View>
 

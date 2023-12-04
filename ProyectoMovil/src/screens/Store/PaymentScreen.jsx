@@ -43,7 +43,7 @@ export const PaymentScreen = ({navigation, route}) => {
       console.log(paymentMethod)
       console.log(selectedCard)
       console.log(products)
-      handleCrearPedido(products, selectedCard, total)
+      handleCrearPedido(products, selectedCard, total, )
       navigation.goBack()
       setKartProducts([])
 

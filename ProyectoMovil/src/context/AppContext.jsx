@@ -8,7 +8,7 @@ import { Xmas } from "../../assets"
 export const AppContext =  createContext()
 // 'http://10.0.2.2:8000/apiMovil/'
 const baseURL = 'https://proyecto-movil-api.onrender.com/apiMovil/'
-const defaultPic= 'https://hips.hearstapps.com/es.h-cdn.co/fotoes/images/noticias-cine/blade-runner-2049-trailer-nuevo/135879347-1-esl-ES/Nuevo-trailer-de-Blade-Runner-2049-la-llave-y-la-cerradura.png'
+const defaultPic= ''
 
 const initialState = {
     username: '',
@@ -73,6 +73,7 @@ function reducer(state, action){
                 username: action.user,
                 userCards: action.userCards,
                 userphone: action.userphone,
+                userLocation: action.userLocation,
                 token: action.token
             }            
 //----------------------------------------------------------------
@@ -141,6 +142,11 @@ export const AppContextProvider = ({children}) =>{
     const [state, dispatch] = useReducer(reducer, initialState)
     const [themeMode, setTheme] = useState(THEME.LIGHT)
     const [kartProducts, setKartProducts] = useState([])
+    const [cartSeller, setCartSeller] = useState('')
+
+    const handleUpdateSeller = (sellerName) =>{
+      setCartSeller(sellerName)
+    }
 
  
     useEffect(() => {
@@ -600,6 +606,8 @@ const handleCrearPedido = async (productos, tarjeta, total) =>{
       tarjeta: numero,
       productos: productos,
       total: total,
+      ubicacion_entrega: state.userLocation, 
+      restaurante: cartSeller,
     }
     , {
       headers:{
@@ -670,6 +678,9 @@ const getMyCards= async () =>{
         handleDeleteCard,
 
         handleUpdateLocation,
+
+        handleUpdateSeller,
+        cartSeller,
 
         handleThemeChange,
         kartProducts, 

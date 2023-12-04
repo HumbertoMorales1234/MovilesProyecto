@@ -6,7 +6,7 @@ import { useAppContext } from '../../hooks/useAppContext'
 import { Ramen } from '../../../assets'
 import { DishModal } from '../Modals/DishModal'
 
-export const DishCard = ({onPress, dish}) => {
+export const DishCard = ({onPress, dish, seller}) => {
 
     const {themeMode} = useAppContext()
     const [modalVisible, setModalVisibility] = useState(false)
@@ -36,7 +36,7 @@ export const DishCard = ({onPress, dish}) => {
                 }}
                 >
                 <View style={styles(themeMode).Modal}>
-                    <DishModal dish={dish} hideModal={() => hideModal()}/>
+                    <DishModal dish={dish} hideModal={() => hideModal()} seller={seller}/>
                 </View> 
             </Modal>
     </TouchableOpacity>

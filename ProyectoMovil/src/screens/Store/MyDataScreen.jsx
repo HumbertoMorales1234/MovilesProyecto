@@ -8,6 +8,8 @@ import { Feather } from '@expo/vector-icons';
 import { RegisterInput } from '../../components/Inputs/RegisterInput'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { ConfirmationButton } from '../../components/Buttons/ConfirmationButton'
+import NoPhoto from '../../../assets/no_photo.jpg';
+
 
 export const MyDataScreen = () => {
   const {themeMode, state, handleUpdateUser} = useAppContext()
@@ -17,7 +19,7 @@ export const MyDataScreen = () => {
   const [username, setUsername] = useState(state.username)
   const [phone, setPhone] = useState(0)
   const [error, setError] = useState('')
- 
+  
 
 
   useEffect(() => {
@@ -82,7 +84,7 @@ export const MyDataScreen = () => {
         </View>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <TouchableOpacity style={styles(themeMode).imageContainer} onPress={() => loadFile()}>
-              <Image source={{uri: selectedPicture}} style={styles(themeMode).image}/>
+              <Image source={selectedPicture==''?NoPhoto:{uri: selectedPicture}} style={styles(themeMode).image}/>
               <Feather name="edit" size={30} color={themeMode.GENERALTEXT} style={styles(themeMode).editIcon}/>
           </TouchableOpacity>
         </View>
