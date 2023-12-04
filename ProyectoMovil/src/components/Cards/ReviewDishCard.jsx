@@ -32,7 +32,7 @@ export const ReviewDishCard = ({onPress, dish, estado, errorDelivery}) => {
 
   return (
     <TouchableOpacity style={styles(themeMode).container} onPress={muestraModal}>
-        <Image source={dish.imagen} style={styles(themeMode).image}/>
+        <Image source={{uri: dish.imagen}} style={styles(themeMode).image}/>
         <View style={{ width: 150, alignItems: 'center'}}>
             <Text style={styles(themeMode).title}>{dish.nombre}</Text>
         </View>
