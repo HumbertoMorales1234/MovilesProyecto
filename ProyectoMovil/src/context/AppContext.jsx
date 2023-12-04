@@ -383,6 +383,7 @@ export const AppContextProvider = ({children}) =>{
           image: Xmas,
           Categories: categories,
           Products: products,
+          location: negocio.ubicacion,
         }
       })
     }

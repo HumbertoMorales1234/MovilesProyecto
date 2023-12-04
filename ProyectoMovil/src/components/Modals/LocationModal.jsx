@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { Dimensions } from 'react-native';
 
 export const LocationModal = ({ hideModal, coordinates, address }) => {
   const [geocodedLocation, setGeocodedLocation] = useState(coordinates);
@@ -33,6 +34,13 @@ export const LocationModal = ({ hideModal, coordinates, address }) => {
     }
   }, [coordinates, address]);
 
+  const openGoogleMaps = () => {
+    if (geocodedLocation) {
+      const url = `https://www.google.com/maps/place/${geocodedLocation.lat},${geocodedLocation.lng}`;
+      Linking.openURL(url);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={hideModal}>
@@ -59,6 +67,7 @@ export const LocationModal = ({ hideModal, coordinates, address }) => {
               }}
               title="Location"
               description={address}
+              onPress={openGoogleMaps} // Añadido para abrir Google Maps al hacer clic en el marcador
             />
           </MapView>
         </View>
@@ -69,15 +78,17 @@ export const LocationModal = ({ hideModal, coordinates, address }) => {
   );
 };
 
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 60,
-    paddingTop: 90,
+    height: windowHeight * 2.9, 
   },
   title: {
+    backgroundColor: 'white',
     fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 2,
@@ -96,5 +107,6 @@ const styles = StyleSheet.create({
     width: 420,
     height: 250,
     marginTop: 10,
+    marginBottom: 80,
   },
 });
