@@ -71,7 +71,7 @@ export const SellerScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles(themeMode).container}>
-      <Image source={restaurant.image} style={styles(themeMode).image} />
+      <Image source={{uri:restaurant.image}} style={styles(themeMode).image} />
 
       <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, gap: 30, width: '100%', paddingVertical: 10}}>
             <IconButton iconName={'arrow-left'} onPress={()=> navigation.goBack()} />
@@ -111,7 +111,7 @@ export const SellerScreen = ({ navigation, route }) => {
         <LocationModal
           hideModal={() => setModalVisible(false)}
           coordinates={null}
-          address={'Durango 568 Isaac Arriaga'}
+          address={restaurant.location}
         />
       )}
     </View>

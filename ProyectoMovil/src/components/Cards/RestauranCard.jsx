@@ -5,10 +5,11 @@ import { useAppContext } from '../../hooks/useAppContext'
 export const RestauranCard = ({item, onPress}) => {
 
     const {themeMode} = useAppContext()
+            
 
   return (
     <TouchableOpacity onPress={onPress} style={styles(themeMode).container}>
-        <Image source={item.image} style={styles(themeMode).image}/>
+        <Image source={{ uri:item.image}} style={styles(themeMode).image}/>
         <Text style={styles(themeMode).text}>{item.restaurantName}</Text>
     </TouchableOpacity>
   )

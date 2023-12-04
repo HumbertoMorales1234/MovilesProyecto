@@ -6,7 +6,8 @@ import axios from 'axios'
 import { Xmas } from "../../assets"
 
 export const AppContext =  createContext()
-
+// 'http://10.0.2.2:8000/apiMovil/'
+const baseURL = 'https://proyecto-movil-api.onrender.com/apiMovil/'
 const defaultPic= 'https://hips.hearstapps.com/es.h-cdn.co/fotoes/images/noticias-cine/blade-runner-2049-trailer-nuevo/135879347-1-esl-ES/Nuevo-trailer-de-Blade-Runner-2049-la-llave-y-la-cerradura.png'
 
 const initialState = {
@@ -172,7 +173,7 @@ export const AppContextProvider = ({children}) =>{
       let ubicacion
 
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView', {
+            const response = await axios.post(baseURL+'LoginView', {
               username: username,
               password: password,
             })
@@ -189,7 +190,7 @@ export const AppContextProvider = ({children}) =>{
           }
 
           try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/LoginView2', {
+            const response = await axios.post(baseURL+'LoginView2', {
             }, {
               headers:{
               "Authorization": 'Bearer '+ token
@@ -224,7 +225,7 @@ export const AppContextProvider = ({children}) =>{
 
     const handleRegister = async (username, password, mail) =>{
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaUsuarioView', {
+            const response = await axios.post(baseURL+'CreaUsuarioView', {
               username: username,
               password: password,
               mail: mail
@@ -246,7 +247,7 @@ export const AppContextProvider = ({children}) =>{
     const handleUpdateUser = async (userpic, username, userphone) =>{
       try {
         // console.log(state.token)
-        const response = await axios.post('http://10.0.2.2:8000/apiMovil/UpdateView', {
+        const response = await axios.post(baseURL+'UpdateView', {
           foto: userpic,
           username: username,
           telefono: userphone
@@ -268,7 +269,7 @@ export const AppContextProvider = ({children}) =>{
     const handleChangePassword = async (newPass, oldPass) =>{
       try {
         // console.log("TOKEN: "+state.token)
-        const response = await axios.post('http://10.0.2.2:8000/apiMovil/changePasswordView', {
+        const response = await axios.post(baseURL+'changePasswordView', {
           oldPass: oldPass,
           newPass: newPass,
         }, {
@@ -372,7 +373,7 @@ export const AppContextProvider = ({children}) =>{
           description: prod.descripcion,
           price: prod.precio,
           dishName: prod.nombre,
-          imagen: Xmas,
+          imagen: prod.imagen,
           location: negocio.ubicacion,
           existance: prod.existencia,
           Categories: prod.categoria.map((cat) => cat.nombre),
@@ -380,9 +381,10 @@ export const AppContextProvider = ({children}) =>{
         return {
           id: negocio.id,
           restaurantName: negocio.nombre,
-          image: Xmas,
+          image: negocio.id_usuario.foto,
           Categories: categories,
           Products: products,
+          location: negocio.ubicacion,
         }
       })
     }
@@ -390,10 +392,9 @@ export const AppContextProvider = ({children}) =>{
 
     const getRestaurants = async () =>{
         try {
-            const response = await axios.post('http://10.0.2.2:8000/apiMovil/negocioView')
+            const response = await axios.post(baseURL+'negocioView')
             if (response.status === 200) {
               transformedData = transformRestaurants(response.data)
-              // console.log(JSON.stringify(transformedData, null, 2))
               return transformedData
             } else {
             }
@@ -420,7 +421,7 @@ export const AppContextProvider = ({children}) =>{
 
     const getDishes= async (restaurant) =>{
         try {
-          const response = await axios.post('http://10.0.2.2:8000/apiMovil/productoView', {
+          const response = await axios.post(baseURL+'productoView', {
             id_restaurante: restaurant
           })
             if (response.status === 200) {
@@ -447,7 +448,7 @@ export const AppContextProvider = ({children}) =>{
 
     const getReviews= async (id) =>{
         try {
-          const response = await axios.post('http://10.0.2.2:8000/apiMovil/reseñaProductoView', {
+          const response = await axios.post(baseURL+'reseñaProductoView', {
             nombre: id
           })
             if (response.status === 200) {
@@ -474,7 +475,7 @@ export const AppContextProvider = ({children}) =>{
     const getMyReviews= async () =>{
       try {
         // console.log(state.token)
-        const response = await axios.post('http://10.0.2.2:8000/apiMovil/myReseñaProductoView', {
+        const response = await axios.post(baseURL+'myReseñaProductoView', {
         }, {
           headers:{
           "Authorization": 'Bearer '+ state.token
@@ -510,7 +511,7 @@ export const AppContextProvider = ({children}) =>{
 
   const getMyOrder= async () =>{
     try {
-      const response = await axios.post('http://10.0.2.2:8000/apiMovil/myPedidosView', {
+      const response = await axios.post(baseURL+'myPedidosView', {
       }, {
         headers:{
         "Authorization": 'Bearer '+ state.token
@@ -529,7 +530,7 @@ export const AppContextProvider = ({children}) =>{
 
 const handleCrearReview = async (texto, calificacion, id_producto ) =>{
   try {
-      const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaReseñaView', {
+      const response = await axios.post(baseURL+'CreaReseñaView', {
         tipo_reseña: 1,
         texto: texto,
         calificacion: calificacion,
@@ -551,7 +552,7 @@ const handleCrearReview = async (texto, calificacion, id_producto ) =>{
 
 const handleCrearTarjeta = async (card) =>{
   try {
-      const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaTarjetaView', {
+      const response = await axios.post(baseURL+'CreaTarjetaView', {
         holder: card.holder,
         number: card.number,
         sCode: card.sCode,
@@ -595,7 +596,7 @@ const handleCrearPedido = async (productos, tarjeta, total) =>{
   }
 
   try {
-    const response = await axios.post('http://10.0.2.2:8000/apiMovil/CreaPedidoView', {
+    const response = await axios.post(baseURL+'CreaPedidoView', {
       tarjeta: numero,
       productos: productos,
       total: total,
@@ -617,7 +618,7 @@ const handleCrearPedido = async (productos, tarjeta, total) =>{
 const getMyCards= async () =>{
   try {
     // console.log(state.token)
-    const response = await axios.post('http://10.0.2.2:8000/apiMovil/myTarjetasView', {
+    const response = await axios.post(baseURL+'myTarjetasView', {
     }, {
       headers:{
       "Authorization": 'Bearer '+ state.token
@@ -645,7 +646,7 @@ const getMyCards= async () =>{
 
     const getCategories= async () =>{
         try {
-          const response = await axios.post('http://10.0.2.2:8000/apiMovil/categoriaView', {
+          const response = await axios.post(baseURL+'categoriaView', {
           })
             if (response.status === 200) {
               transformedData = transformCategories(response.data)
